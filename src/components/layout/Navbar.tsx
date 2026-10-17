@@ -84,9 +84,9 @@ export function Navbar({
             </b>
           )}
         </NavLink>
-        <NavLink to="/inbox" title="Cora requests">
+        <NavLink to="/inbox" title="Cora">
           <InfinityIcon size={20} />
-          <span>Cora requests</span>
+          <span>Cora</span>
         </NavLink>
       </nav>
       <div className="market-sidebar-bottom">

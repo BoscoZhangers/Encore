@@ -10,7 +10,7 @@ export function CoraShortcut() {
       aria-label="Open Cora requests"
       title="Cora needs a hand"
     >
-      <InfinityIcon size={27} strokeWidth={2.25} />
+      <InfinityIcon size={37} strokeWidth={2.25} />
     </Link>
   );
 }
