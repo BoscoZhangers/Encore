@@ -1,0 +1,30 @@
+/* Updates page. */
+.notification-list {
+  padding: 0;
+}
+.notification-list > a {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 22px;
+  border-bottom: 1px solid var(--line);
+}
+.notification-list > a:last-child {
+  border: 0;
+}
+.notification-list a > div {
+  flex: 1;
+}
+.notification-list p {
+  font-size: 13px;
+}
+.notification-list small {
+  font-size: 10px;
+}
+.notification-icon {
+  background: #eff3e7;
+  padding: 10px;
+  border-radius: 12px;
+  color: #6a8650;
+  display: flex;
+}

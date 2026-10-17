@@ -1,0 +1,57 @@
+/* Conversation metadata and offer availability. */
+.buyer-stock {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  color: #536e53;
+  font-size: 12px;
+}
+.offer-availability {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 20px 0;
+  color: #536e53;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.offer-availability svg {
+  flex-shrink: 0;
+}
+
+.message-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-bottom: 7px;
+  line-height: 1.5;
+}
+.message-sender {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  color: #53664e;
+}
+.message-sender .seller-avatar {
+  width: 25px;
+  height: 25px;
+  flex: 0 0 25px;
+  font-size: 9px;
+}
+.message-meta time {
+  font-size: 10px;
+  color: #65735f;
+  white-space: nowrap;
+}
+.bubble.outgoing .message-sender {
+  color: #e0efce;
+}
+.bubble.outgoing .message-meta time {
+  color: #d0dfc8;
+}

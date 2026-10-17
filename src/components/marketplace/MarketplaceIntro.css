@@ -1,0 +1,355 @@
+/* Marketplace introduction. */
+.market-banner {
+  background: var(--green);
+  color: #fff;
+  border-radius: 11px;
+  min-height: 244px;
+  padding: 31px 34px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  position: relative;
+  overflow: hidden;
+}
+.market-banner-copy {
+  position: relative;
+  z-index: 1;
+}
+.market-banner-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #cee1b5;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.7px;
+}
+.market-banner h2 {
+  color: #fff;
+  font-size: clamp(32px, 3vw, 44px);
+  font-weight: 500;
+  letter-spacing: -0.4px;
+  line-height: 1.25;
+  margin: 16px 0 11px;
+}
+.market-banner p:not(.market-banner-label) {
+  font-size: 12px;
+  font-weight: 400;
+  color: #cad7c8;
+  line-height: 1.8;
+}
+.market-banner a {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  color: var(--lime);
+  font-weight: 500;
+  font-size: 12px;
+  margin-top: 27px;
+}
+.market-banner-art {
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+.market-banner-art img {
+  width: 205px;
+  transform: rotate(-12deg);
+  position: relative;
+  filter: brightness(0) saturate(100%) invert(88%) sepia(27%) saturate(477%) hue-rotate(30deg)
+    brightness(98%) contrast(90%);
+}
+.market-banner-art i {
+  position: absolute;
+  border: 1px solid #ffffff12;
+  width: 350px;
+  height: 190px;
+  border-radius: 50%;
+  transform: rotate(-28deg);
+}
+.market-banner-art i:nth-child(2) {
+  width: 430px;
+  height: 245px;
+}
+.market-banner-art > span {
+  position: absolute;
+  bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--green);
+  background: #e4efcf;
+  border: 4px solid #ffffff13;
+  padding: 10px 14px;
+  border-radius: 7px;
+  font-size: 11px;
+  box-shadow: 0 6px 20px #10291e33;
+  transform: rotate(-4deg);
+  white-space: nowrap;
+}
+.market-benefits {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 22px 0 32px;
+}
+.market-benefits article {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 19px 17px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+}
+.market-benefits article > svg {
+  color: #7b9659;
+  margin-top: 2px;
+}
+.market-benefits strong {
+  font-size: 12px;
+  font-weight: 600;
+}
+.market-benefits p {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+/* Cora marketplace guide. */
+.market-guide {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 22px 20px 0;
+  overflow: hidden;
+  scroll-margin-top: 24px;
+}
+.market-guide-heading > span {
+  display: inline-flex;
+  padding: 10px;
+  border-radius: 11px;
+  background: #eef3e5;
+  color: var(--green);
+  margin-bottom: 17px;
+}
+.market-guide .market-kicker {
+  font-size: 8px;
+  letter-spacing: 1.1px;
+}
+.market-guide h2 {
+  font-size: 21px;
+  line-height: 1.3;
+  letter-spacing: -0.6px;
+  margin-top: 8px;
+}
+.market-guide-intro {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 12px;
+}
+.market-guide ol {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+}
+.market-guide li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  position: relative;
+  padding-bottom: 22px;
+}
+.market-guide li:last-child {
+  padding-bottom: 0;
+}
+.market-guide li:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: 31px;
+  left: 14px;
+  bottom: 5px;
+  width: 1px;
+  background: var(--line);
+}
+.market-guide li > span {
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #f0f4e9;
+  font-size: 10px;
+}
+.market-guide h3 {
+  font-size: 12px;
+  letter-spacing: -0.1px;
+  margin: 5px 0;
+}
+.market-guide li p {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.market-agent-mode {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 13px;
+  background: #f7f8f3;
+  border-radius: 7px;
+  margin-bottom: 20px;
+  color: #66755e;
+}
+.market-agent-mode p {
+  font-size: 10px;
+  line-height: 1.7;
+}
+.market-guide > a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+  margin: 0 -20px;
+  padding: 17px 20px;
+  font-size: 12px;
+  font-weight: 550;
+}
+
+/* Responsive adjustments. */
+@media (min-width: 1001px) {
+  .market-banner {
+    min-height: 238px;
+    padding: 24px 30px;
+  }
+  .market-banner h2 {
+    font-size: 37px;
+    margin: 12px 0 9px;
+  }
+  .market-banner a {
+    margin-top: 24px;
+  }
+  .market-banner-art img {
+    width: 175px;
+  }
+  .market-banner-art > span {
+    bottom: 0;
+    padding: 8px 12px;
+  }
+  .market-benefits {
+    margin: 18px 0 25px;
+  }
+  .market-benefits article {
+    padding: 14px;
+  }
+  .market-content-grid {
+    grid-template-columns: minmax(0, 1fr) 246px;
+    gap: 22px;
+  }
+  .market-guide {
+    padding: 18px 17px 0;
+  }
+  .market-guide h2 {
+    font-size: 19px;
+  }
+  .market-guide > a {
+    margin-inline: -17px;
+    padding-inline: 17px;
+  }
+}
+
+@media (max-width: 1150px) {
+  .market-content-grid {
+    grid-template-columns: minmax(0, 1fr) 250px;
+    gap: 18px;
+  }
+  .market-benefits {
+    gap: 10px;
+  }
+  .market-benefits article {
+    padding: 15px 12px;
+    gap: 8px;
+  }
+  .market-benefits article > svg {
+    width: 17px;
+  }
+  .market-banner {
+    padding: 28px;
+  }
+}
+
+@media (max-width: 800px) {
+  .market-content-grid {
+    grid-template-columns: 1fr;
+  }
+  .market-guide ol {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .market-guide li {
+    padding: 0;
+  }
+  .market-guide li::before {
+    display: none;
+  }
+  .market-guide-heading {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+  .market-guide-heading > span {
+    margin: 0;
+  }
+  .market-guide h2 br {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .market-banner {
+    padding: 24px;
+    grid-template-columns: 1fr;
+    min-height: 260px;
+  }
+  .market-banner h2 {
+    font-size: 34px;
+  }
+  .market-banner-art {
+    position: absolute;
+    right: -55px;
+    bottom: -28px;
+    opacity: 0.13;
+    width: 210px;
+    height: 230px;
+  }
+  .market-banner-art > span {
+    display: none;
+  }
+  .market-benefits {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin: 16px 0 25px;
+  }
+  .market-benefits article {
+    align-items: center;
+    padding: 12px 15px;
+    gap: 12px;
+  }
+  .market-benefits p {
+    margin-top: 2px;
+  }
+  .market-guide {
+    scroll-margin-top: 80px;
+  }
+  .market-guide ol {
+    grid-template-columns: 1fr;
+    gap: 21px;
+  }
+  .market-guide h2 {
+    font-size: 19px;
+  }
+  .market-guide li p {
+    font-size: 12px;
+  }
+}

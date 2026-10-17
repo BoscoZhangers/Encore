@@ -1,0 +1,23 @@
+node_modules
+dist
+data
+uploads
+.git
+.env
+.env.*
+!.env.example
+coverage
+artifacts
+*.log
+.DS_Store
+.codex
+.chatgpt
+Logo design for Encore
+docs/previews
+*.sqlite
+*.sqlite-*
+*.pem
+*.key
+*.p12
+credentials*.json
+service-account*.json

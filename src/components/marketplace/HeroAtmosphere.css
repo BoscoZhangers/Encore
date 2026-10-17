@@ -1,0 +1,164 @@
+.market-banner {
+  isolation: isolate;
+  background: #10392f;
+}
+.market-banner .hero-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.hero-particle-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.hero-object-field {
+  position: absolute;
+  inset: 0 0 0 50%;
+  transform: translate3d(var(--scene-x, 0px), var(--scene-y, 0px), 0);
+}
+.hero-object {
+  position: absolute;
+  left: var(--object-x);
+  top: var(--object-y);
+  width: var(--object-size);
+  height: var(--object-size);
+  opacity: var(--object-opacity, 1);
+  filter: blur(var(--object-blur, 0)) brightness(var(--object-brightness, 1));
+}
+.hero-object-0 {
+  --object-x: 34%;
+  --object-y: 9%;
+  --object-size: 74px;
+  --tilt: -14deg;
+  --delay: -2s;
+}
+.hero-object-1 {
+  --object-x: 82%;
+  --object-y: 39%;
+  --object-size: 58px;
+  --tilt: 12deg;
+  --delay: -5s;
+}
+.hero-object-2 {
+  --object-x: 27%;
+  --object-y: 64%;
+  --object-size: 78px;
+  --tilt: -8deg;
+  --delay: -8s;
+}
+.hero-object-3 {
+  --object-x: 2%;
+  --object-y: 36%;
+  --object-size: 51px;
+  --tilt: 10deg;
+  --delay: -11s;
+}
+.hero-object-4 {
+  --object-x: 69%;
+  --object-y: 5%;
+  --object-size: 43px;
+  --tilt: 8deg;
+  --delay: -6.5s;
+}
+.hero-object-5 {
+  --object-x: 73%;
+  --object-y: 69%;
+  --object-size: 62px;
+  --tilt: -11deg;
+  --delay: -9.5s;
+}
+.hero-object-6 {
+  --object-x: 14%;
+  --object-y: 7%;
+  --object-size: 47px;
+  --tilt: 15deg;
+  --delay: -13s;
+}
+.hero-object-glass {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  color: #e5f7c1;
+  background: linear-gradient(135deg, #b6e99f26, #235547aa 60%, #163c32e6);
+  border: 1px solid #d5f3b64d;
+  box-shadow:
+    inset 0 1px 0 #f1ffdb33,
+    inset 0 -8px 16px #0a2a2029,
+    0 var(--depth-shadow-y, 16px) var(--depth-shadow-blur, 25px)
+      rgb(4 27 37 / var(--depth-shadow-alpha, 0.24)),
+    0 0 30px #a6e77e12;
+  backdrop-filter: blur(8px);
+  animation: encore-object-float 9s ease-in-out infinite;
+  animation-delay: var(--delay);
+  transform: rotate(var(--tilt));
+}
+.hero-object-glass svg {
+  width: 50%;
+  height: 50%;
+  filter: drop-shadow(0 0 7px #c5e99444);
+}
+.hero-atmosphere-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #10392f 0%, #10392fe6 27%, #10392f70 45%, transparent 64%);
+}
+.hero-atmosphere[data-still='true'] .hero-object-glass {
+  animation-play-state: paused;
+}
+.hero-object-field.is-e .hero-object-glass {
+  animation-name: encore-object-breathe;
+}
+@keyframes encore-object-float {
+  0%,
+  100% {
+    transform: translateY(5px) rotate(var(--tilt));
+  }
+  50% {
+    transform: translateY(-9px) rotate(calc(var(--tilt) + 7deg));
+  }
+}
+@keyframes encore-object-breathe {
+  0%,
+  100% {
+    transform: translateY(3px) rotate(var(--tilt));
+  }
+  50% {
+    transform: translateY(-3px) rotate(var(--tilt));
+  }
+}
+@media (max-width: 650px) {
+  .hero-object-field {
+    inset-inline-start: 55%;
+    opacity: 0.3;
+  }
+  .hero-object {
+    width: 44px;
+    height: 44px;
+  }
+  .hero-object-glass {
+    border-radius: 13px;
+  }
+  .hero-object-glass svg {
+    width: 24px;
+    height: 24px;
+  }
+  .hero-particle-canvas {
+    opacity: 0.5;
+  }
+  .hero-atmosphere-shade {
+    background: linear-gradient(90deg, #10392ff2, #10392fcc 45%, #10392f22);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-object {
+    transition: none;
+  }
+  .hero-object-glass {
+    animation: none;
+  }
+}

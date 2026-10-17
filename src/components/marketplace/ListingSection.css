@@ -1,0 +1,385 @@
+/* Search, filters, grids, pagination, and section layout. */
+/* Figma listing section. Kept independent of seller inventory cards. */
+.marketplace-shell .discovery {
+  margin-top: 28px;
+}
+.figma-listing-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.figma-listing-heading h2 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font:
+    600 15px 'DM Sans',
+    sans-serif;
+  letter-spacing: -0.25px;
+}
+.figma-listing-heading p {
+  color: #7c8874;
+  font-size: 10px;
+  margin-top: 8px;
+}
+.figma-listing-heading > a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+}
+.figma-listing-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin: 24px 0 15px;
+  border-bottom: 1px solid #e0e6d9;
+}
+.figma-listing-tabs {
+  display: flex;
+  gap: 20px;
+}
+.figma-listing-tabs button {
+  position: relative;
+  background: transparent;
+  padding: 0 0 13px;
+  color: #7c8874;
+  font-size: 10px;
+  white-space: nowrap;
+}
+.figma-listing-tabs button.active {
+  color: #173f32;
+  font-weight: 600;
+}
+.figma-listing-tabs button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #173f32;
+}
+.figma-listing-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 11px;
+}
+.figma-listing-search {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #7e8d73;
+}
+.figma-listing-search button {
+  display: flex;
+  background: transparent;
+  color: inherit;
+  padding: 3px;
+}
+.figma-listing-search input {
+  width: 114px;
+  padding: 3px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  font-size: 10px;
+}
+.figma-listing-search input::placeholder {
+  color: #7e8d73;
+}
+.marketplace-shell .figma-filter-toggle {
+  background: transparent;
+  color: #7e8d73;
+  display: grid;
+  place-items: center;
+  padding: 3px;
+}
+.figma-listing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px 16px;
+}
+.listing-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 32px;
+}
+.listing-pagination button {
+  min-width: 82px;
+  padding: 9px 14px;
+  border: 1px solid #dce4d4;
+  border-radius: 7px;
+  background: #fff;
+  color: #173f32;
+  font-size: 10px;
+  font-weight: 600;
+}
+.listing-pagination button:hover:not(:disabled) {
+  background: #eef4e7;
+}
+.listing-pagination button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.listing-pagination span {
+  color: #71806b;
+  font-size: 10px;
+}
+.market-guide-row {
+  margin-top: 38px;
+}
+.market-guide-row .market-guide {
+  max-width: none;
+}
+.market-guide-row .market-guide-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.market-guide-row .market-guide-heading > span {
+  margin: 0;
+}
+.market-guide-row .market-guide h2 br {
+  display: none;
+}
+.market-guide-row .market-guide ol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+.market-guide-row .market-guide li {
+  padding: 0;
+}
+.market-guide-row .market-guide li::before {
+  display: none;
+}
+.market-guide-row .market-guide > a {
+  justify-content: flex-start;
+  gap: 15px;
+}
+@media (max-width: 1199px) {
+  .figma-listing-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 800px) {
+  .figma-listing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .figma-listing-toolbar {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .figma-listing-tools {
+    margin-left: auto;
+  }
+  .market-guide-row .market-guide ol {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 420px) {
+  .figma-listing-tabs {
+    gap: 16px;
+  }
+  .figma-listing-tools {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .figma-listing-search {
+    flex: 1;
+  }
+  .figma-listing-search input {
+    width: 100%;
+  }
+  .figma-listing-grid {
+    gap: 22px 12px;
+  }
+}
+/* Marketplace listing layout. */
+.market-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 278px;
+  gap: 24px;
+  align-items: start;
+}
+.marketplace-shell .discovery {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+.marketplace-shell .section-title {
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 18px;
+}
+.marketplace-shell .section-title h2 {
+  font-size: 20px;
+  letter-spacing: -0.6px;
+}
+.marketplace-shell .section-title p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.market-listing-heading-links {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+.market-listing-heading-links a {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+}
+.marketplace-shell .results-count {
+  font-size: 11px;
+  background: #eaf0e2;
+  color: var(--green);
+  border-radius: 6px;
+  padding: 5px 8px;
+}
+.marketplace-shell .search-row {
+  gap: 9px;
+  margin-bottom: 13px;
+}
+.marketplace-shell .search-box {
+  border-radius: 7px;
+  padding-left: 12px;
+}
+.marketplace-shell .search-box input {
+  font-size: 12px;
+  padding: 12px 8px;
+}
+.marketplace-shell .search-box button {
+  font-size: 12px;
+  padding: 10px;
+}
+.marketplace-shell .filter-toggle {
+  font-size: 12px;
+  padding: 10px 12px;
+}
+.marketplace-shell .category-tabs {
+  gap: 5px;
+  padding-bottom: 13px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.marketplace-shell .category-tabs button {
+  font-size: 11px;
+  padding: 7px 10px;
+  border-radius: 5px;
+}
+.marketplace-shell .category-tabs button.active {
+  background: #e8efdd;
+  color: var(--green);
+}
+.marketplace-shell .filter-panel {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 16px;
+  border-radius: 8px;
+}
+.marketplace-shell .filter-panel label {
+  min-width: 0;
+}
+.marketplace-shell .listing-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+}
+@media (max-width: 850px) {
+  .listing-grid {
+    gap: 15px;
+  }
+  .filter-panel {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 650px) {
+  .discovery {
+    padding-top: 30px;
+  }
+  .search-box {
+    padding: 5px 10px;
+    gap: 7px;
+  }
+  .search-box input {
+    font-size: 12px;
+  }
+  .search-box button {
+    padding: 9px;
+    font-size: 0;
+    gap: 0;
+  }
+  .filter-toggle {
+    font-size: 11px;
+    padding: 10px;
+  }
+  .category-tabs {
+    gap: 7px;
+    padding: 18px 0 23px;
+  }
+  .category-tabs button {
+    font-size: 11px;
+    padding: 9px 13px;
+  }
+  .filter-panel {
+    grid-template-columns: 1fr 1fr;
+    padding: 15px;
+    gap: 12px;
+  }
+  .filter-panel label:first-child {
+    grid-column: 1/-1;
+  }
+  .filter-panel .button {
+    font-size: 11px;
+  }
+}
+@media (min-width: 1200px) {
+  .marketplace-shell .listing-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 1150px) {
+  .market-listing-heading-links a {
+    display: none;
+  }
+}
+@media (max-width: 600px) {
+  .marketplace-shell .section-title h2 {
+    font-size: 19px;
+  }
+  .marketplace-shell .section-title p {
+    font-size: 11px;
+  }
+  .marketplace-shell .search-row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .marketplace-shell .search-box {
+    flex: 1;
+    min-width: 190px;
+  }
+  .marketplace-shell .search-box button {
+    display: flex;
+  }
+  .marketplace-shell .category-tabs {
+    gap: 4px;
+    overflow: visible;
+  }
+  .marketplace-shell .category-tabs button {
+    font-size: 11px;
+    padding: 7px 9px;
+    flex-shrink: 0;
+  }
+  .marketplace-shell .listing-grid {
+    gap: 12px;
+  }
+}

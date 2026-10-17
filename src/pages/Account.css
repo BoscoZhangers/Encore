@@ -1,0 +1,22 @@
+/* Account and privacy page. */
+.account-panel h2 {
+  margin-bottom: 5px;
+}
+.account-panel > p {
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+.account-panel h3 {
+  margin: 25px 0 12px;
+}
+.account-panel form label {
+  margin: 20px 0;
+}
+.block-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}

@@ -1,0 +1,224 @@
+/* Seller insights. */
+.insights-summary {
+  margin-top: 30px;
+}
+.insights-summary.compact {
+  margin-top: 36px;
+}
+.insights-summary-heading,
+.insights-page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.insights-summary-heading h2,
+.insights-page-heading h1 {
+  color: #173f32;
+  font-size: 23px;
+  font-weight: 500;
+  letter-spacing: -0.6px;
+}
+.insights-page-heading {
+  margin: 25px 0 30px;
+}
+.insights-page-heading h1 {
+  font-size: 31px;
+  margin-top: 5px;
+}
+.insights-page-heading > div > p:last-child {
+  color: #7c8874;
+  font-size: 12px;
+  margin-top: 8px;
+}
+.insights-period {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 150px;
+  justify-content: flex-start;
+  padding: 13px 15px;
+  border: 1px solid #e0e6d9;
+  border-radius: 9px;
+  background: #fff;
+  color: #72806c;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 1px 2px #203d2408;
+}
+.insights-period > span {
+  flex: 1;
+  text-align: left;
+}
+.insights-period svg:last-child {
+  transition: transform 140ms ease;
+}
+.insights-period svg:last-child.open {
+  transform: rotate(180deg);
+}
+.insights-period-wrap {
+  position: relative;
+}
+.insights-period-menu {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 7px);
+  right: 0;
+  min-width: 150px;
+  padding: 5px;
+  border: 1px solid #e0e6d9;
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: 0 12px 28px #203d2418;
+}
+.insights-period-menu button {
+  display: block;
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #667663;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+.insights-period-menu button:hover,
+.insights-period-menu button[aria-checked='true'] {
+  background: #eff5e7;
+  color: #173f32;
+}
+.insights-view-link {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #52724e;
+  font-size: 11px;
+  font-weight: 600;
+}
+.insight-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+.insight-card {
+  position: relative;
+  min-height: 184px;
+  padding: 23px 25px 19px;
+  border: 1px solid #e0e6d9;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 1px 2px #203d2410;
+}
+.insight-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #87977f;
+  font-size: 13px;
+}
+.insight-card-top svg {
+  color: #9eae91;
+}
+.insight-card > strong {
+  display: block;
+  margin-top: 19px;
+  color: #173f32;
+  font-size: 39px;
+  font-family: Outfit, sans-serif;
+  font-weight: 500;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.insight-card-trend {
+  position: absolute;
+  top: 79px;
+  right: 22px;
+  width: 82px;
+  height: 27px;
+  overflow: visible;
+}
+.insight-card-trend path {
+  fill: none;
+  stroke: #83a85f;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 2px 3px #6e92552a);
+}
+.insight-card.trend-down .insight-card-trend path {
+  stroke: #c96e61;
+  filter: drop-shadow(0 2px 3px #a5483924);
+}
+.insight-card-foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  color: #87977f;
+  font-size: 10px;
+}
+.insight-card-foot b {
+  padding: 5px 7px;
+  border-radius: 5px;
+  background: #eff5e7;
+  color: #688754;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.insight-card-foot span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.insight-card-foot svg {
+  margin-left: auto;
+  color: #adc69d;
+}
+.insights-note {
+  margin-top: 17px;
+  color: #87977f;
+  font-size: 10px;
+}
+
+/* Responsive adjustments. */
+@media (max-width: 1150px) {
+  .insight-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .insights-page-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .insights-period {
+    width: 100%;
+    justify-content: center;
+  }
+  .insights-period-wrap {
+    width: 100%;
+  }
+  .insight-card-grid {
+    grid-template-columns: 1fr;
+  }
+  .insight-card {
+    min-height: 170px;
+    padding: 21px;
+  }
+  .insight-card > strong {
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 700px) {
+  .marketplace-shell .market-heading h1,
+  .marketplace-shell .page-title h1,
+  .marketplace-shell .insights-page-heading h1 {
+    font-size: 25px;
+  }
+}

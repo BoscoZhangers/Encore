@@ -1,0 +1,385 @@
+/* Marketplace listing cards. */
+.figma-count {
+  background: #e9eee0;
+  color: #6c7d60;
+  border-radius: 4px;
+  padding: 3px 5px;
+  font-size: 9px;
+  font-weight: 500;
+}
+.figma-listing-card {
+  min-width: 0;
+  text-align: left;
+}
+.figma-listing-photo {
+  position: relative;
+  display: block;
+  border-radius: 7px;
+  overflow: hidden;
+  background: #e6e7e1;
+}
+.marketplace-shell .figma-listing-photo .item-picture {
+  height: auto;
+  aspect-ratio: 1.42;
+  border-radius: 7px;
+}
+.figma-listing-photo .condition-badge {
+  display: none;
+}
+.figma-listing-photo img {
+  transition: transform 0.3s;
+}
+.figma-listing-card:hover .figma-listing-photo img,
+.figma-listing-card:focus-within .figma-listing-photo img {
+  transform: scale(1.05);
+}
+.figma-listing-status {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 500;
+  background: #fffffff0;
+  color: #284737;
+}
+.figma-listing-status i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #85a65b;
+}
+.figma-listing-status.negotiating {
+  color: #7a6124;
+  background: #faf0d7;
+}
+.figma-listing-status.negotiating i {
+  background: #ba9848;
+}
+.figma-listing-status.sold {
+  background: #173f32;
+  color: #fff;
+}
+.figma-listing-arrow {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: #f4f6edf2;
+  color: #173f32;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+.figma-listing-category {
+  font-size: 9px;
+  color: #7e8d73;
+  margin-top: 11px;
+}
+.buyer-condition {
+  max-width: calc(100% - 20px);
+}
+.buyer-listing-seller {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  min-width: 0;
+}
+.buyer-listing-seller > span:last-child {
+  min-width: 0;
+}
+.buyer-listing-seller small {
+  display: block;
+  color: #7e8d73;
+  font-size: 9px;
+}
+.buyer-listing-seller strong {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #284737;
+  font-size: 11px;
+  font-weight: 500;
+}
+.marketplace-shell .figma-listing-card h3 {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5;
+  margin-top: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.figma-listing-price {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 7px;
+}
+.figma-listing-price > span {
+  font-size: 9px;
+  color: #7e8d73;
+  font-weight: 400;
+  margin-left: 6px;
+}
+.figma-listing-views {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #7e8d73;
+  font-size: 10px;
+  margin-top: 12px;
+}
+.figma-listing-views svg {
+  flex-shrink: 0;
+}
+.figma-listing-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  color: #7e8d73;
+  font-size: 9px;
+  margin-top: 10px;
+}
+.figma-listing-meta span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 420px) {
+  .marketplace-shell .figma-listing-photo .item-picture {
+    aspect-ratio: 1.1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .figma-listing-photo img {
+    transition: none;
+  }
+  .figma-listing-card:hover .figma-listing-photo img,
+  .figma-listing-card:focus-within .figma-listing-photo img {
+    transform: none;
+  }
+}
+.marketplace-shell .item-card {
+  border-radius: 9px;
+  padding: 8px;
+  box-shadow: 0 2px 3px #18372002;
+}
+.marketplace-shell .item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 22px #1837200c;
+}
+.marketplace-shell .item-card .item-picture {
+  border-radius: 6px;
+  aspect-ratio: 1.35;
+}
+.marketplace-shell .condition-badge {
+  font-size: 10px;
+  top: 10px;
+  left: 10px;
+  padding: 5px 9px;
+  background: #fffffff0;
+}
+.marketplace-shell .item-card-body {
+  padding: 13px 5px 5px;
+}
+.marketplace-shell .category-line {
+  font-size: 10px;
+  margin-bottom: 6px;
+}
+.marketplace-shell .category-line span {
+  display: none;
+}
+.marketplace-shell .item-card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.marketplace-shell .location {
+  font-size: 11px;
+  line-height: 1.5;
+}
+.marketplace-shell .card-bottom {
+  padding-top: 13px;
+}
+.marketplace-shell .card-bottom strong {
+  font-size: 20px;
+  letter-spacing: -0.6px;
+}
+.marketplace-shell .card-bottom small {
+  display: inline;
+  font-size: 10px;
+}
+.marketplace-shell .buyer-stock {
+  font-size: 11px;
+  margin-top: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 11px;
+  color: #637358;
+}
+/* Responsive adjustments. */
+@media (max-width: 1150px) {
+  .hero {
+    padding: 35px 30px;
+    grid-template-columns: 1.4fr 1fr;
+  }
+  .hero h1 {
+    font-size: 39px;
+  }
+  .hero-buttons {
+    gap: 15px;
+  }
+  .hero-visual {
+    transform: scale(0.9);
+  }
+  .listing-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 850px) {
+  .hero {
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .hero h1 {
+    font-size: 34px;
+  }
+  .hero p br {
+    display: none;
+  }
+  .hero-proof {
+    flex-direction: column;
+    gap: 9px;
+  }
+  .hero-visual {
+    transform: scale(0.8);
+  }
+  .hero-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .item-card-body {
+    padding: 13px;
+  }
+  .category-line span {
+    display: none;
+  }
+}
+@media (max-width: 650px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 32px 25px;
+    min-height: 330px;
+    border-radius: 14px;
+  }
+  .hero h1 {
+    font-size: 37px;
+    letter-spacing: -1.5px;
+    margin: 16px 0;
+  }
+  .hero p {
+    font-size: 12px;
+  }
+  .hero-visual {
+    display: none;
+  }
+  .hero-buttons {
+    flex-direction: row;
+    gap: 20px;
+  }
+  .hero-proof {
+    flex-direction: row;
+    gap: 16px;
+    font-size: 9px;
+    margin-top: 26px;
+  }
+  .hero .eyebrow {
+    font-size: 8px;
+    letter-spacing: 1.1px;
+  }
+  .hero .button {
+    font-size: 11px;
+    padding: 13px;
+  }
+  .item-card-body {
+    padding: 12px;
+  }
+  .item-card h3 {
+    font-size: 13px;
+  }
+  .category-line {
+    font-size: 9px;
+  }
+  .product-icon {
+    width: 66px;
+  }
+  .condition-badge {
+    top: 8px;
+    left: 8px;
+    font-size: 8px;
+    padding: 4px 7px;
+  }
+  .card-bottom strong {
+    font-size: 19px;
+  }
+  .card-bottom small {
+    display: none;
+  }
+  .how-it-works {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    margin-top: 36px;
+    padding-top: 27px;
+  }
+  .how-it-works h3 {
+    margin-top: 7px;
+  }
+  .how-it-works p {
+    max-width: 100%;
+  }
+}
+/* Responsive adjustments. */
+@media (min-width: 1001px) {
+  .marketplace-shell .section-title h2 {
+    font-size: 18px;
+  }
+  .marketplace-shell .category-tabs {
+    margin-top: 0;
+  }
+}
+@media (max-width: 600px) {
+  .marketplace-shell .item-card {
+    padding: 6px;
+  }
+  .marketplace-shell .item-card .item-picture {
+    aspect-ratio: 1;
+  }
+  .marketplace-shell .item-card h3 {
+    font-size: 13px;
+  }
+  .marketplace-shell .condition-badge {
+    font-size: 9px;
+    left: 7px;
+    top: 7px;
+  }
+  .marketplace-shell .card-bottom strong {
+    font-size: 18px;
+  }
+  .marketplace-shell .card-bottom small {
+    font-size: 9px;
+  }
+  .marketplace-shell .round-arrow {
+    width: 27px;
+    height: 27px;
+  }
+}

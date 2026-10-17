@@ -1,0 +1,266 @@
+/* Listing detail page. */
+.detail-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 55px;
+  max-width: 1150px;
+  margin: auto;
+}
+.detail-layout aside {
+  padding: 20px 0;
+}
+.detail-title {
+  font-size: 38px;
+  margin: 16px 0;
+}
+.detail-tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 21px;
+}
+.detail-tags span {
+  background: #edf2e5;
+  border-radius: 20px;
+  font-size: 11px;
+  color: #6b8055;
+  padding: 6px 10px;
+}
+.detail-price {
+  font-size: 35px;
+  font-weight: 600;
+  letter-spacing: -1px;
+}
+.detail-price small {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.detail-layout .location {
+  font-size: 13px;
+  margin-top: 17px;
+}
+.seller-info {
+  display: flex;
+  gap: 13px;
+  align-items: center;
+}
+.seller-info strong {
+  font-size: 14px;
+}
+.seller-info p {
+  font-size: 11px;
+  color: var(--muted);
+}
+.agent-explainer {
+  margin: 25px 0;
+  display: flex;
+  gap: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px;
+  background: #fff;
+}
+.agent-explainer svg {
+  flex-shrink: 0;
+  color: #789951;
+}
+.agent-explainer h3 {
+  font-size: 15px;
+  letter-spacing: -0.3px;
+  margin-bottom: 7px;
+}
+.agent-explainer p {
+  font-size: 12px;
+  color: var(--muted);
+}
+.pickup-note {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  margin: 25px 0 15px;
+}
+.pickup-note svg {
+  flex-shrink: 0;
+}
+.pickup-note p {
+  color: var(--muted);
+  margin-top: 4px;
+}
+.details-copy {
+  margin-top: 22px;
+}
+.details-copy h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+.details-copy > p {
+  font-size: 13px;
+  color: var(--muted);
+  white-space: pre-wrap;
+}
+.details-copy h3 {
+  margin-top: 28px;
+  font-size: 15px;
+}
+.fact {
+  border-top: 1px solid var(--line);
+  padding: 16px 0;
+  margin-top: 12px;
+  font-size: 13px;
+}
+.fact p {
+  color: var(--muted);
+  margin-top: 6px;
+  white-space: pre-wrap;
+}
+.gallery {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+.gallery img {
+  width: calc(25% - 9px);
+  height: 100px;
+  object-fit: cover;
+  border-radius: 9px;
+}
+
+/* Marketplace listing detail treatment. */
+.marketplace-shell .market-detail-page .back {
+  font-size: 12px;
+  margin-bottom: 24px;
+}
+.marketplace-shell .detail-layout {
+  max-width: none;
+  grid-template-columns: minmax(0, 1.2fr) minmax(310px, 1fr);
+  gap: 25px;
+  align-items: start;
+}
+.marketplace-shell .detail-layout > div {
+  min-width: 0;
+}
+.marketplace-shell .detail-layout aside {
+  padding: 26px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+}
+.marketplace-shell .detail-layout .item-picture.large {
+  aspect-ratio: 1.2;
+  border-radius: 11px;
+}
+.marketplace-shell .detail-title {
+  font-size: 30px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.marketplace-shell .listing-description {
+  margin: 22px 0;
+  padding: 17px 18px;
+  border-radius: 8px;
+  background: #f4f6ef;
+}
+.marketplace-shell .listing-description h2 {
+  margin: 0 0 9px;
+  color: #244235;
+  font-size: 13px;
+  font-weight: 600;
+}
+.marketplace-shell .listing-description p {
+  color: #697765;
+  font-size: 12px;
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+.marketplace-shell .market-detail-page .seller-info {
+  margin: 22px 0 24px;
+}
+.marketplace-shell .details-copy {
+  border-radius: 11px;
+  padding: 25px;
+}
+.marketplace-shell .details-copy h2 {
+  font-size: 22px;
+}
+.marketplace-shell .details-copy p {
+  font-size: 13px;
+}
+.marketplace-shell .detail-layout .agent-explainer {
+  border-radius: 8px;
+  background: #f0f4e9;
+}
+.marketplace-shell .detail-layout .agent-explainer h3 {
+  font-size: 15px;
+}
+.marketplace-shell .detail-layout .agent-explainer p {
+  font-size: 12px;
+}
+
+/* Responsive adjustments. */
+@media (max-width: 1150px) {
+  .detail-layout {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 850px) {
+  .detail-layout {
+    grid-template-columns: 1fr 1fr;
+    gap: 23px;
+  }
+  .detail-title {
+    font-size: 29px;
+  }
+}
+
+@media (max-width: 650px) {
+  .detail-layout {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .detail-layout aside {
+    grid-row: 1;
+    padding: 8px 0 15px;
+  }
+  .detail-layout .item-picture.large {
+    aspect-ratio: 1.3;
+  }
+  .detail-title {
+    font-size: 31px;
+  }
+  .detail-price {
+    font-size: 29px;
+  }
+  .detail-layout .agent-explainer {
+    margin: 20px 0;
+  }
+  .details-copy {
+    padding: 21px;
+  }
+}
+
+/* Responsive adjustments. */
+@media (max-width: 1000px) {
+  .marketplace-shell .detail-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(290px, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .marketplace-shell .detail-layout {
+    grid-template-columns: 1fr;
+  }
+  .marketplace-shell .detail-layout aside {
+    grid-row: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .marketplace-shell .detail-layout aside,
+  .marketplace-shell .details-copy {
+    padding: 21px;
+  }
+  .marketplace-shell .detail-title {
+    font-size: 29px;
+  }
+}

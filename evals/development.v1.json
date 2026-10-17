@@ -1,0 +1,26 @@
+{
+  "version": "encore-development-v1",
+  "cases": [
+    {
+      "id": "known-case",
+      "text": "Is the case included?",
+      "actions": ["answer_from_facts"],
+      "contains": ["original case"],
+      "requestKind": null
+    },
+    {
+      "id": "low-offer",
+      "text": "I offer CAD 120",
+      "actions": ["evaluate_offer"],
+      "contains": ["165.60", "No stock"],
+      "requestKind": null
+    },
+    {
+      "id": "battery-unknown",
+      "text": "How long does the battery last?",
+      "actions": ["request_clarification"],
+      "contains": ["sent your question"],
+      "requestKind": "question"
+    }
+  ]
+}

@@ -1,0 +1,312 @@
+/* Shared marketplace shell, top bar, page-heading rhythm, and responsive content frame. */
+.marketplace-shell {
+  --green: #173f32;
+  --dark: #173f32;
+  --lime: #cee99a;
+  --ink: #243a30;
+  --muted: #69766c;
+  --line: #e6e9e1;
+  --cream: #f7f8f3;
+  min-height: 100vh;
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+}
+.marketplace-shell svg {
+  flex-shrink: 0;
+}
+.marketplace-shell .button {
+  border-radius: 7px;
+  font-size: 13px;
+  padding: 12px 16px;
+}
+.market-skip {
+  position: fixed;
+  top: -100px;
+  left: 20px;
+  z-index: 100;
+  padding: 14px;
+  background: white;
+}
+.market-skip:focus {
+  top: 10px;
+}
+.market-main {
+  margin-left: 256px;
+  min-width: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.market-content {
+  flex: 1 0 auto;
+}
+.market-topbar {
+  min-height: 74px;
+  background: #fcfdf9;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 34px;
+}
+.market-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 12px;
+  color: #768071;
+}
+.market-breadcrumb strong {
+  font-weight: 500;
+  color: var(--ink);
+}
+.market-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.market-top-actions button {
+  background: transparent;
+  color: var(--muted);
+  min-width: 32px;
+  min-height: 32px;
+  display: grid;
+  place-items: center;
+}
+.market-top-note {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+.market-notifications {
+  position: relative;
+  padding: 7px;
+  display: flex;
+}
+.market-notifications span {
+  position: absolute;
+  top: -4px;
+  right: -5px;
+  border-radius: 12px;
+  background: var(--green);
+  color: white;
+  font-size: 10px;
+  padding: 2px 5px;
+}
+.market-login {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+.marketplace-shell .page {
+  max-width: 1560px;
+  padding: 30px 34px 36px;
+  min-height: 0;
+}
+.marketplace-shell .account-page {
+  max-width: 1560px;
+}
+.marketplace-shell .account-page > .account-panel,
+.marketplace-shell .updates-page > .notification-list {
+  max-width: 812px;
+}
+.marketplace-shell .account-page > .account-panel {
+  width: 100%;
+  margin-inline: auto;
+}
+.marketplace-shell .account-page > .page-title {
+  width: 100%;
+  max-width: 812px;
+  margin-inline: auto;
+}
+.market-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 27px;
+}
+.market-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #6d7969;
+  font-size: 9px;
+  font-weight: 650;
+  letter-spacing: 1.6px;
+  line-height: 1.6;
+}
+.market-kicker svg {
+  flex: 0 0 auto;
+}
+.market-heading h1 {
+  font-size: clamp(25px, 2.3vw, 34px);
+  font-weight: 500;
+  letter-spacing: -0.75px;
+  line-height: 1.2;
+  margin-top: 8px;
+  overflow-wrap: anywhere;
+}
+.market-heading h1 > span {
+  color: #92ad64;
+}
+.market-heading > div > p:last-child {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 9px;
+}
+.market-heading .button {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+/* Keep desktop proportions airy without scaling controls or browser zoom. */
+@media (min-width: 1001px) {
+  .market-topbar {
+    min-height: 64px;
+    padding-block: 12px;
+  }
+  .marketplace-shell .page {
+    padding-top: 24px;
+  }
+  .market-heading {
+    margin-bottom: 22px;
+  }
+  .market-heading h1 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 1150px) {
+  .marketplace-shell .page {
+    padding: 26px 24px;
+  }
+  .market-topbar {
+    padding-inline: 24px;
+  }
+  .market-top-note {
+    display: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .market-main {
+    margin-left: 76px;
+  }
+}
+
+@media (max-width: 600px) {
+  .market-main {
+    margin-left: 0;
+  }
+  .market-topbar {
+    min-height: 55px;
+    padding: 11px 18px;
+    gap: 10px;
+  }
+  .market-breadcrumb {
+    font-size: 10px;
+    gap: 8px;
+  }
+  .market-top-actions {
+    gap: 8px;
+  }
+  .market-avatar {
+    width: 28px;
+    height: 28px;
+  }
+  .marketplace-shell .page {
+    padding: 22px 17px 28px;
+  }
+  .market-heading {
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .market-heading h1 {
+    font-size: 28px;
+  }
+  .market-heading > div > p:last-child {
+    font-size: 12px;
+  }
+  .market-heading .button {
+    padding: 10px 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marketplace-shell *,
+  .marketplace-shell *::before {
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.marketplace-shell .market-brand,
+.marketplace-shell .market-heading h1,
+.marketplace-shell .page-title h1,
+.marketplace-shell .insights-page-heading h1,
+.marketplace-shell .market-banner h2 {
+  font-family: Outfit, sans-serif;
+}
+
+/* Keep every primary page heading on one shared Figma-derived rhythm. */
+.marketplace-shell .market-heading,
+.marketplace-shell .page-title,
+.marketplace-shell .insights-page-heading {
+  margin-top: 0;
+  margin-bottom: 22px;
+}
+.marketplace-shell .market-heading h1,
+.marketplace-shell .page-title h1,
+.marketplace-shell .insights-page-heading h1 {
+  margin: 8px 0 0;
+  color: #173f32;
+  font-size: 29px;
+  font-weight: 500;
+  letter-spacing: -0.75px;
+  line-height: 1.2;
+}
+.marketplace-shell .page-title .eyebrow {
+  gap: 7px;
+  color: #6d7969;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  line-height: 1.6;
+}
+
+/* Shared navigation stays outside the marketplace-only visual scope. */
+.market-sidebar {
+  font-family: 'DM Sans', sans-serif;
+}
+.market-brand {
+  font-family: Outfit, sans-serif;
+}
+.app-page-content {
+  margin-left: 256px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.app-page-content > main {
+  flex: 1 0 auto;
+}
+@media (max-width: 1000px) {
+  .app-page-content {
+    margin-left: 76px;
+  }
+}
+
+@media (max-width: 600px) {
+  .app-page-content {
+    margin-left: 0;
+  }
+}

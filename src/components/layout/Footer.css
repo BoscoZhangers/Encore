@@ -1,0 +1,86 @@
+/* Application footer. */
+.footer {
+  border-top: 1px solid var(--line);
+  max-width: 1384px;
+  margin: 0 auto;
+  padding: 25px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.footer .logo {
+  font-size: 22px;
+  color: var(--green);
+}
+.footer .logo-crop {
+  transform: scale(0.8);
+  margin-right: -7px;
+}
+.footer > span:last-child {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Marketplace footer. */
+.market-footer {
+  max-width: 1560px;
+  width: 100%;
+  margin: auto auto 0;
+  padding: 0 34px 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: #717d69;
+  font-size: 10px;
+}
+.market-footer span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.market-footer img {
+  width: 19px;
+}
+
+/* Responsive adjustments. */
+@media (max-width: 1150px) {
+  .footer {
+    margin: 0 28px;
+  }
+}
+
+@media (max-width: 850px) {
+  .footer > span:last-child {
+    display: none;
+  }
+}
+
+@media (max-width: 650px) {
+  .footer {
+    margin: 0 18px;
+    flex-wrap: wrap;
+    padding: 20px 0;
+    gap: 10px;
+  }
+  .footer > span {
+    font-size: 10px;
+  }
+}
+
+/* Responsive adjustments. */
+@media (max-width: 800px) {
+  .market-footer > span:last-child {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .market-footer {
+    padding: 0 18px 24px;
+  }
+}

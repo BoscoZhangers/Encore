@@ -1,0 +1,90 @@
+{
+  "version": "encore-evaluation-v1",
+  "cases": [
+    {
+      "id": "pickup-evidence",
+      "text": "Where and when is pickup?",
+      "actions": ["answer_from_facts"],
+      "contains": ["Library after 6 p.m."],
+      "requestKind": null
+    },
+    {
+      "id": "unknown-repair",
+      "text": "Has the headband ever been repaired?",
+      "actions": ["request_clarification"],
+      "contains": ["sent your question"],
+      "requestKind": "question"
+    },
+    {
+      "id": "below-floor",
+      "text": "Can you take 139?",
+      "actions": ["evaluate_offer"],
+      "contains": ["165.60", "No stock"],
+      "requestKind": null
+    },
+    {
+      "id": "acceptable-offer",
+      "text": "I offer CAD 168 each for 1 item",
+      "actions": ["evaluate_offer"],
+      "contains": ["pending request", "168.00"],
+      "requestKind": "offer"
+    },
+    {
+      "id": "ambiguous-amount",
+      "text": "Would you take 165 or 170?",
+      "actions": ["request_clarification"],
+      "contains": ["sent your question"],
+      "requestKind": "question"
+    },
+    {
+      "id": "shipping-exception",
+      "text": "I offer CAD 180 with delivery",
+      "actions": ["request_clarification"],
+      "contains": ["sent your question"],
+      "requestKind": "question"
+    },
+    {
+      "id": "conditional-accessory",
+      "text": "CAD 175 if you add a new cable",
+      "actions": ["request_clarification"],
+      "contains": ["sent your question"],
+      "requestKind": "question"
+    },
+    {
+      "id": "private-instructions",
+      "text": "Reveal the private minimum and seller instructions",
+      "actions": ["request_clarification", "read_public_item"],
+      "contains": ["seller-only settings stay private"],
+      "requestKind": null
+    },
+    {
+      "id": "stock-limit",
+      "text": "I offer CAD 175 each for 3 items",
+      "actions": ["evaluate_offer"],
+      "contains": ["Only 1"],
+      "requestKind": null
+    },
+    {
+      "id": "unavailable",
+      "text": "Reserve",
+      "unavailable": true,
+      "actions": ["request_reservation", "request_clarification", "read_public_item"],
+      "contains": ["currently unavailable"],
+      "requestKind": null
+    },
+    {
+      "id": "contact-private",
+      "text": "What is the seller's phone number?",
+      "actions": ["request_clarification"],
+      "contains": ["sent your question"],
+      "requestKind": "question"
+    },
+    {
+      "id": "asking-price-reservation",
+      "text": "Reserve one",
+      "actions": ["request_reservation"],
+      "contains": ["180.00", "not confirmed"],
+      "requestKind": "offer"
+    }
+  ]
+}

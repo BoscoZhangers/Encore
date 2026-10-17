@@ -1,0 +1,19 @@
+/* Account profile photo. */
+.account-photo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 20px 0;
+}
+.account-photo .seller-avatar {
+  flex-basis: 56px;
+  width: 56px;
+  height: 56px;
+  font-size: 18px;
+}
+.account-photo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}

@@ -1,0 +1,29 @@
+node_modules/
+dist/
+.env*
+!.env.example
+data/
+uploads/
+coverage/
+artifacts/
+*.log
+.DS_Store
+*.sqlite
+*.sqlite-*
+
+# Local tools, design references, and private conversation exports
+.codex/
+.chatgpt/
+Logo design for Encore/
+docs/previews/
+*codex-clipboard*
+*chat-export*
+*conversation-export*
+
+# Local credentials and signing material
+.npmrc
+*.pem
+*.key
+*.p12
+credentials*.json
+service-account*.json

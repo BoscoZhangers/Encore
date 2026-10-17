@@ -1,0 +1,15 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATA_DIR: /app/data
+    ports:
+      - '127.0.0.1:3001:3001'
+    volumes:
+      - encore-data:/app/data
+volumes:
+  encore-data:

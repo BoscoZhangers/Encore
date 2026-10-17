@@ -1,0 +1,101 @@
+/* Seller inbox. */
+.inbox-page {
+  max-width: 1060px;
+}
+.request-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.request {
+  padding: 27px;
+}
+.request-heading {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.request-heading > div {
+  flex: 1;
+}
+.request-icon {
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #eef3e5;
+  width: 46px;
+  height: 46px;
+  color: #71924e;
+}
+.request-heading .eyebrow {
+  font-size: 9px;
+  color: var(--muted);
+}
+.request-heading h3 {
+  margin-top: 4px;
+  font-size: 19px;
+}
+.request-heading p {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.request-heading p a {
+  text-decoration: underline;
+}
+.request blockquote {
+  border-left: 3px solid #b4ce8f;
+  padding: 13px 17px;
+  background: #f5f7ef;
+  font-size: 13px;
+  margin: 20px 0;
+  line-height: 1.7;
+}
+.offer-summary {
+  display: flex;
+  gap: 45px;
+  margin: 20px 0 25px;
+}
+.offer-summary span {
+  display: block;
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.offer-summary strong {
+  font-size: 20px;
+}
+.request-footer {
+  border-top: 1px solid var(--line);
+  padding-top: 15px;
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: center;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* Responsive adjustments. */
+@media (max-width: 650px) {
+  .request {
+    padding: 20px;
+  }
+  .request-heading h3 {
+    font-size: 16px;
+  }
+  .request-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .offer-summary {
+    gap: 24px;
+  }
+  .offer-summary strong {
+    font-size: 18px;
+  }
+  .offer-summary span {
+    font-size: 9px;
+  }
+}
