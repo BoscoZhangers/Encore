@@ -10,6 +10,7 @@ export async function api<T = any>(url: string, options: RequestInit = {}): Prom
   const form = options.body instanceof FormData;
   const response = await fetch('/api' + url, {
     ...options,
+    cache: options.cache ?? 'no-store',
     credentials: 'same-origin',
     headers: {
       'X-Encore-Client': 'web',

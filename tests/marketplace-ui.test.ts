@@ -74,16 +74,16 @@ test('marketplace navigation preserves filters, listing details and the separate
             seen: 0,
           },
           {
-            id: 'sale-notification',
-            body: 'Sale completed for New Balance sneakers: CAD 55.00 earned.',
-            href: '/messages/sold',
+            id: 'payment-notification',
+            body: 'Devnet test payment received for Wireless headphones. Review the reservation and mark the sale complete.',
+            href: '/inbox?request=offer',
             created_at: Date.now() - 1000,
             seen: 1,
           },
           {
-            id: 'question-notification',
-            body: 'A buyer has a question about Camera.',
-            href: '/inbox',
+            id: 'sale-notification',
+            body: 'Sale completed for New Balance sneakers: CAD 55.00 earned.',
+            href: '/messages/sold',
             created_at: Date.now() - 2000,
             seen: 1,
           },
@@ -150,8 +150,9 @@ test('marketplace navigation preserves filters, listing details and the separate
     assert.match(container.querySelector('.cora-activity')!.textContent!, /Your updates/);
     assert.equal(container.querySelectorAll('.cora-activity-list li').length, 3);
     assert.match(container.querySelector('.cora-activity')!.textContent!, /CAD 160.00/);
+    assert.match(container.querySelector('.cora-activity')!.textContent!, /Payment confirmed/);
+    assert.match(container.querySelector('.cora-activity')!.textContent!, /Complete sale/);
     assert.match(container.querySelector('.cora-activity')!.textContent!, /CAD 55.00 earned/);
-    assert.match(container.querySelector('.cora-activity')!.textContent!, /question about Camera/);
     assert.match(container.textContent!, /Your month at a glance/);
     assert.match(container.textContent!, /Total earnings/);
     assert.match(container.textContent!, /\$645/);

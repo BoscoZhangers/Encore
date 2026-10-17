@@ -1,4 +1,12 @@
-import { ArrowRight, Bell, CircleHelp, PackageCheck, ShoppingBag, Sparkles } from 'lucide-react';
+import {
+  ArrowRight,
+  Bell,
+  CircleHelp,
+  PackageCheck,
+  ShoppingBag,
+  Sparkles,
+  WalletCards,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useData } from '../../hooks/useData';
 import { ErrorBox, Spinner } from '../ui';
@@ -10,10 +18,12 @@ type Notification = {
   created_at: number;
 };
 
-type NotificationKind = 'offer' | 'sale' | 'question' | 'listing' | 'general';
+type NotificationKind = 'offer' | 'payment' | 'sale' | 'question' | 'listing' | 'general';
 
 function notificationKind(body: string): NotificationKind {
   const normalized = body.toLowerCase();
+  if (normalized.includes('payment received') || normalized.includes('payment confirmed'))
+    return 'payment';
   if (normalized.includes('offer')) return 'offer';
   if (normalized.includes('sale completed') || normalized.includes('marked this sale completed'))
     return 'sale';
@@ -24,6 +34,7 @@ function notificationKind(body: string): NotificationKind {
 
 function notificationTitle(kind: NotificationKind) {
   if (kind === 'offer') return 'A good offer just landed';
+  if (kind === 'payment') return 'Payment confirmed';
   if (kind === 'sale') return 'Off to a new adventure';
   if (kind === 'question') return 'Cora needs your help';
   if (kind === 'listing') return 'A new chapter is ready';
@@ -32,6 +43,7 @@ function notificationTitle(kind: NotificationKind) {
 
 function notificationAction(kind: NotificationKind) {
   if (kind === 'offer') return 'Review offer';
+  if (kind === 'payment') return 'Complete sale';
   if (kind === 'question') return 'Answer question';
   if (kind === 'listing') return 'View listing';
   return 'View update';
@@ -39,6 +51,7 @@ function notificationAction(kind: NotificationKind) {
 
 function NotificationIcon({ kind }: { kind: NotificationKind }) {
   if (kind === 'offer') return <Sparkles size={20} />;
+  if (kind === 'payment') return <WalletCards size={20} />;
   if (kind === 'sale') return <ShoppingBag size={20} />;
   if (kind === 'question') return <CircleHelp size={20} />;
   if (kind === 'listing') return <PackageCheck size={20} />;
