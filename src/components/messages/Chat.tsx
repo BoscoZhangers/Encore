@@ -218,13 +218,15 @@ export function Chat({ id, user, tell }: { id: string; user: { id: string }; tel
         </div>
       ) : (
         <>
-          <div className="quick-questions">
-            {data.listing.facts.slice(0, 2).map((f: any) => (
-              <button key={f.id} disabled={busy} onClick={() => send(f.question)}>
-                {f.question}
-              </button>
-            ))}
-          </div>
+          {Array.isArray(data.listing.facts) && data.listing.facts.length > 0 && (
+            <div className="quick-questions">
+              {data.listing.facts.slice(0, 2).map((f: any) => (
+                <button key={f.id} disabled={busy} onClick={() => send(f.question)}>
+                  {f.question}
+                </button>
+              ))}
+            </div>
+          )}
           <p id="offer-availability" className="offer-availability" role="status">
             <Package size={14} />
             {available > 0
