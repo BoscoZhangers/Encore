@@ -469,7 +469,7 @@ test('profile photos require ownership and are public only after explicit select
     .get(photoUrl)
     .expect(200)
     .expect('Content-Type', /image\/webp/);
-  const listing = (await request(app).get(`/api/listings/${listingId}`)).body.listing;
+  const listing = (await seller.get(`/api/listings/${listingId}`)).body.listing;
   assert.equal(listing.seller_avatar_url, photoUrl);
   assert.equal(listing.seller_name, 'Seller');
   const rows = (await buyer.get('/api/listings?scope=others&stage=all')).body.listings;
@@ -477,7 +477,7 @@ test('profile photos require ownership and are public only after explicit select
   await seller.patch('/api/account/profile').set(headers).send({ photoId: null }).expect(200);
   await request(app).get(photoUrl).expect(404);
   assert.equal(
-    (await request(app).get(`/api/listings/${listingId}`)).body.listing.seller_avatar_url,
+    (await seller.get(`/api/listings/${listingId}`)).body.listing.seller_avatar_url,
     null,
   );
 });
@@ -673,8 +673,12 @@ test('marketplace status tabs distinguish pending offers and completed sales wit
   const cid = (await buyer.post('/api/conversations').set(headers).send({ listingId: listing.id }))
     .body.conversation.id;
   const find = async (stage: string) =>
-    (await request(app).get('/api/listings').query({ stage, q: 'Status tab example' }).expect(200))
-      .body.listings;
+    (
+      await seller
+        .get('/api/listings')
+        .query({ scope: 'mine', stage, q: 'Status tab example' })
+        .expect(200)
+    ).body.listings;
   assert.equal((await find('active'))[0].market_status, 'active');
   await send(buyer, cid, 'I offer CAD 165');
   assert.equal((await find('active')).length, 0);
@@ -702,6 +706,61 @@ test('marketplace status tabs distinguish pending offers and completed sales wit
       status: 'paused',
     });
   assert.equal((await find('all')).length, 0);
+});
+
+test('unavailable listings remain visible only to the seller and reserving buyer', async () => {
+  const listing = (
+    await seller
+      .post('/api/listings')
+      .set(headers)
+      .send({ ...item, title: 'Reserved visibility example', quantity: 1 })
+      .expect(201)
+  ).body.listing;
+  const cid = (
+    await buyer.post('/api/conversations').set(headers).send({ listingId: listing.id }).expect(200)
+  ).body.conversation.id;
+  await send(buyer, cid, 'I offer CAD 165');
+  const offer = (await db.get("SELECT id FROM requests WHERE conversation_id=? AND kind='offer'", [
+    cid,
+  ]))!;
+  await seller.post(`/api/requests/${offer.id}/approve`).set(headers).expect(200);
+
+  const mine = (
+    await seller
+      .get('/api/listings')
+      .query({ scope: 'mine', q: 'Reserved visibility example' })
+      .expect(200)
+  ).body.listings;
+  const reservedForMe = (
+    await buyer
+      .get('/api/listings')
+      .query({ scope: 'others', q: 'Reserved visibility example' })
+      .expect(200)
+  ).body.listings;
+  const unavailableToOthers = (
+    await buyer2
+      .get('/api/listings')
+      .query({ scope: 'others', q: 'Reserved visibility example' })
+      .expect(200)
+  ).body.listings;
+  assert.equal(mine[0].available, 0);
+  assert.equal(reservedForMe[0].available, 0);
+  assert.equal(unavailableToOthers.length, 0);
+  await seller.get(`/api/listings/${listing.id}`).expect(200);
+  await buyer.get(`/api/listings/${listing.id}`).expect(200);
+  await buyer2.get(`/api/listings/${listing.id}`).expect(404);
+  await request(app).get(`/api/listings/${listing.id}`).expect(404);
+  await buyer2.post('/api/conversations').set(headers).send({ listingId: listing.id }).expect(404);
+
+  await seller.post(`/api/requests/${offer.id}/complete`).set(headers).expect(200);
+  const completedForBuyer = (
+    await buyer
+      .get('/api/listings')
+      .query({ scope: 'others', q: 'Reserved visibility example' })
+      .expect(200)
+  ).body.listings;
+  assert.equal(completedForBuyer[0].market_status, undefined);
+  assert.equal(completedForBuyer[0].available, 0);
 });
 
 test('buyer discovery excludes own stock and combines condition, category, CAD price and nearby sorting', async () => {

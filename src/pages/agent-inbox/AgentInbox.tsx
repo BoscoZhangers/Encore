@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -14,10 +14,24 @@ import { Empty, ErrorBox, Spinner } from '../../components/ui';
 import type { Tell } from '../../components/feedback/Toast';
 
 export function AgentInbox({ tell }: { tell: Tell }) {
+  const [searchParams] = useSearchParams();
+  const focusedRequest = searchParams.get('request');
   const { data, error, reload } = useData('/seller/requests', 6000);
-  const [filter, setFilter] = useState('pending');
+  const [filter, setFilter] = useState(focusedRequest ? 'approved' : 'pending');
   const [failure, setFailure] = useState('');
   const [busy, setBusy] = useState('');
+
+  useEffect(() => {
+    if (!data || !focusedRequest) return;
+    const request = data.requests.find((candidate: any) => candidate.id === focusedRequest);
+    if (!request) return;
+    setFilter(request.status === 'approved' ? 'approved' : 'all');
+    requestAnimationFrame(() =>
+      document
+        .getElementById(`request-${focusedRequest}`)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+    );
+  }, [data, focusedRequest]);
 
   async function act(id: string, action: string, body: any = {}) {
     setBusy(id);
@@ -70,7 +84,7 @@ export function AgentInbox({ tell }: { tell: Tell }) {
       ) : requests.length ? (
         <div className="request-list">
           {requests.map((r: any) => (
-            <article className="panel request" key={r.id}>
+            <article className="panel request" id={`request-${r.id}`} key={r.id}>
               <div className="request-heading">
                 <span className={`request-icon ${r.kind}`}>
                   {r.kind === 'offer' ? <ShoppingBag size={21} /> : <MessageCircle size={21} />}

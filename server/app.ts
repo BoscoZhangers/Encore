@@ -260,23 +260,37 @@ export function createApp(db: DB) {
       throw new HttpError(400, 'Choose a location to find nearby items');
     if (f.min !== undefined && f.max !== undefined && f.min > f.max)
       throw new HttpError(400, 'Minimum price must not exceed maximum price');
-    const ownership =
-      f.scope === 'mine'
-        ? 'AND l.seller_id=?'
-        : f.scope === 'others' && req.user
-          ? 'AND l.seller_id<>?'
-          : '';
+    const access: string[] = [];
+    const accessArgs: unknown[] = [];
+    if (f.scope === 'mine') {
+      access.push('l.seller_id=?');
+      accessArgs.push(req.user!.id);
+    } else if (f.scope === 'others' && req.user) {
+      access.push('l.seller_id<>?');
+      accessArgs.push(req.user.id);
+      access.push(`(
+        l.quantity-l.reserved-l.sold>0 OR EXISTS (
+          SELECT 1 FROM requests visible_request
+          WHERE visible_request.listing_id=l.id
+            AND visible_request.buyer_id=?
+            AND visible_request.status IN ('approved','completed')
+        )
+      )`);
+      accessArgs.push(req.user.id);
+    } else {
+      access.push('l.quantity-l.reserved-l.sold>0');
+    }
     const rows = await db.all(
       `SELECT l.*,u.name AS seller_name,
        (SELECT p.photo_id FROM profiles p WHERE p.user_id=l.seller_id) AS avatar_photo_id,
        (SELECT COUNT(*) FROM listing_views v WHERE v.listing_id=l.id) AS views,
        CASE WHEN l.sold=l.quantity THEN 'sold'
-            WHEN EXISTS (SELECT 1 FROM requests r WHERE r.listing_id=l.id AND r.kind='offer' AND r.status='pending') THEN 'negotiating'
+            WHEN EXISTS (SELECT 1 FROM requests r WHERE r.listing_id=l.id AND r.kind='offer' AND r.status IN ('pending','approved')) THEN 'negotiating'
             ELSE 'active' END AS market_status
        FROM listings l JOIN users u ON u.id=l.seller_id
-       WHERE l.status='published' AND (l.quantity-l.reserved-l.sold>0 ${f.scope !== 'others' && (f.stage === 'all' || f.stage === 'sold') ? 'OR l.sold=l.quantity' : ''})
-       ${ownership} ORDER BY l.created_at DESC LIMIT 500`,
-      ownership ? [req.user!.id] : [],
+       WHERE l.status='published' AND ${access.join(' AND ')}
+       ORDER BY l.created_at DESC LIMIT 500`,
+      accessArgs,
     );
     const results = rows
       .map((r) => {
@@ -323,6 +337,17 @@ export function createApp(db: DB) {
       [req.params.id],
     );
     if (!row || (row.status !== 'published' && row.seller_id !== req.user?.id))
+      throw new HttpError(404, 'Listing not found');
+    const unavailable = row.quantity - row.reserved - row.sold <= 0;
+    const participant =
+      unavailable && req.user && row.seller_id !== req.user.id
+        ? await db.get(
+            `SELECT 1 FROM requests
+             WHERE listing_id=? AND buyer_id=? AND status IN ('approved','completed') LIMIT 1`,
+            [row.id, req.user.id],
+          )
+        : null;
+    if (unavailable && row.seller_id !== req.user?.id && !participant)
       throw new HttpError(404, 'Listing not found');
     res.json({ listing: publicListing(row) });
   });
@@ -532,6 +557,8 @@ export function createApp(db: DB) {
       'SELECT * FROM conversations WHERE listing_id=? AND buyer_id=?',
       [listingId, req.user!.id],
     );
+    if (!conversation && listing.quantity - listing.reserved - listing.sold <= 0)
+      throw new HttpError(404, 'Listing not found');
     if (!conversation) {
       const newId = id();
       await db.run(

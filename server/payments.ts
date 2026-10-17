@@ -7,7 +7,7 @@ import {
   Keypair,
 } from '@solana/web3.js';
 import type { Query } from './db.js';
-import { HttpError } from './domain.js';
+import { event, HttpError, message, notify } from './domain.js';
 export const DEVNET_GENESIS = 'EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG';
 function connection() {
   return new Connection(
@@ -70,7 +70,12 @@ export async function verifyPayment(
   buyerId: string,
   signature: string,
 ) {
-  const r = await q.get('SELECT * FROM requests WHERE id=? AND buyer_id=?', [requestId, buyerId]);
+  const r = await q.get(
+    `SELECT r.*,l.seller_id,l.title
+     FROM requests r JOIN listings l ON l.id=r.listing_id
+     WHERE r.id=? AND r.buyer_id=?`,
+    [requestId, buyerId],
+  );
   if (!r || r.status !== 'approved' || !r.payment_reference)
     throw new HttpError(409, 'An approved reservation with a payment intent is required');
   if (r.signature) {
@@ -101,5 +106,18 @@ export async function verifyPayment(
     [signature, r.id],
   );
   if (!updated) throw new HttpError(409, 'Reservation changed while verifying payment');
+  await message(
+    q,
+    r.conversation_id,
+    'agent',
+    'The buyer’s Solana devnet test payment was verified. The seller can now confirm the exchange and mark the sale complete.',
+  );
+  await notify(
+    q,
+    r.seller_id,
+    `Devnet test payment received for ${r.title}. Review the reservation and mark the sale complete.`,
+    `/inbox?request=${r.id}`,
+  );
+  await event(q, r.seller_id, 'devnet_payment_verified');
   return { ok: true, network: 'devnet' };
 }

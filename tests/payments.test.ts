@@ -3,11 +3,12 @@ import assert from 'node:assert/strict';
 import { createServer, type Server } from 'node:http';
 import { Keypair, Transaction, SystemInstruction } from '@solana/web3.js';
 import { openDB, type DB } from '../server/db.js';
-import { DEVNET_GENESIS, paymentIntent } from '../server/payments.js';
+import { DEVNET_GENESIS, paymentIntent, verifyPayment } from '../server/payments.js';
 
 let server: Server,
   db: DB,
-  genesis = DEVNET_GENESIS;
+  genesis = DEVNET_GENESIS,
+  paymentReference = '';
 const payer = Keypair.generate().publicKey;
 const recipient = Keypair.generate().publicKey;
 before(async () => {
@@ -26,7 +27,64 @@ before(async () => {
                 lastValidBlockHeight: 100,
               },
             }
-          : null;
+          : rpc.method === 'getTransaction'
+            ? {
+                slot: 1,
+                blockTime: null,
+                meta: {
+                  err: null,
+                  fee: 5000,
+                  preBalances: [1000000, 0, 0],
+                  postBalances: [795000, 200000, 0],
+                  innerInstructions: null,
+                  logMessages: [],
+                  preTokenBalances: [],
+                  postTokenBalances: [],
+                  rewards: [],
+                },
+                transaction: {
+                  signatures: ['1'.repeat(64)],
+                  message: {
+                    accountKeys: [
+                      {
+                        pubkey: payer.toBase58(),
+                        signer: true,
+                        writable: true,
+                        source: 'transaction',
+                      },
+                      {
+                        pubkey: recipient.toBase58(),
+                        signer: false,
+                        writable: true,
+                        source: 'transaction',
+                      },
+                      {
+                        pubkey: paymentReference,
+                        signer: false,
+                        writable: false,
+                        source: 'transaction',
+                      },
+                    ],
+                    instructions: [
+                      {
+                        program: 'system',
+                        programId: '11111111111111111111111111111111',
+                        parsed: {
+                          type: 'transfer',
+                          info: {
+                            source: payer.toBase58(),
+                            destination: recipient.toBase58(),
+                            lamports: 200000,
+                          },
+                        },
+                      },
+                    ],
+                    recentBlockhash: Keypair.generate().publicKey.toBase58(),
+                  },
+                },
+                version: 'legacy',
+              }
+            : null;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ jsonrpc: '2.0', id: rpc.id, result }));
   });
@@ -62,11 +120,30 @@ test('unsigned devnet intent uses approved stock, recipient, amount and unique r
   assert.equal(transfer.fromPubkey.toBase58(), payer.toBase58());
   assert.ok(transaction.signatures.every((s) => s.signature === null));
   const stored = (await db.get("SELECT * FROM requests WHERE id='offer'"))!;
+  paymentReference = stored.payment_reference;
   assert.ok(
     transaction.instructions[0].keys.some((k) => k.pubkey.toBase58() === stored.payment_reference),
   );
   assert.equal(stored.status, 'approved');
   assert.equal(stored.signature, null);
+});
+test('verified payment notifies the seller once with a completion link', async () => {
+  const signature = '1'.repeat(64);
+  assert.deepEqual(await verifyPayment(db, 'offer', 'buyer', signature), {
+    ok: true,
+    network: 'devnet',
+  });
+  assert.deepEqual(await verifyPayment(db, 'offer', 'buyer', signature), { ok: true });
+  const notifications = await db.all("SELECT * FROM notifications WHERE user_id='seller'");
+  assert.equal(notifications.length, 1);
+  assert.match(notifications[0].body, /payment received/i);
+  assert.equal(notifications[0].href, '/inbox?request=offer');
+  const messages = await db.all(
+    "SELECT * FROM messages WHERE conversation_id='conversation' AND role='agent'",
+  );
+  assert.equal(messages.length, 1);
+  assert.match(messages[0].body, /mark the sale complete/i);
+  await db.run("UPDATE requests SET signature=NULL WHERE id='offer'");
 });
 test('payment intent refuses the wrong buyer and any non-devnet RPC', async () => {
   await assert.rejects(
