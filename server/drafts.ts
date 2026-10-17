@@ -42,14 +42,14 @@ export async function createPhotoDraft(image: Buffer, input: z.infer<typeof draf
     );
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(process.env.GEMINI_VISION_MODEL || process.env.GEMINI_MODEL || 'gemini-2.5-flash')}:generateContent`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(process.env.GEMINI_VISION_MODEL || process.env.GEMINI_MODEL || 'gemini-3.8-flash')}:generateContent`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'x-goog-api-key': process.env.GEMINI_API_KEY,
         },
-        signal: AbortSignal.timeout(25000),
+        signal: AbortSignal.timeout(60000),
         body: JSON.stringify({
           systemInstruction: {
             parts: [
@@ -68,8 +68,8 @@ export async function createPhotoDraft(image: Buffer, input: z.infer<typeof draf
             },
           ],
           generationConfig: {
-            temperature: 0.2,
-            maxOutputTokens: 2500,
+            maxOutputTokens: 4096,
+            thinkingConfig: { thinkingLevel: 'low' },
             responseMimeType: 'application/json',
             responseSchema: {
               type: 'OBJECT',
@@ -94,7 +94,7 @@ export async function createPhotoDraft(image: Buffer, input: z.infer<typeof draf
         }),
       },
     );
-    if (!response.ok) throw Error('Provider unavailable');
+    if (!response.ok) throw Error(`Gemini photo draft failed with HTTP ${response.status}`);
     const payload: any = await response.json();
     const candidate = payload.candidates?.[0];
     if (candidate?.finishReason !== 'STOP') throw Error('Incomplete generation');
@@ -123,6 +123,11 @@ export async function createPhotoDraft(image: Buffer, input: z.infer<typeof draf
     };
   } catch (error) {
     if (error instanceof HttpError) throw error;
+    if (process.env.NODE_ENV !== 'test')
+      console.warn(
+        'Gemini photo draft unavailable:',
+        error instanceof Error ? error.message : 'Unknown provider error',
+      );
     throw new HttpError(
       503,
       'Photo AI could not finish this draft. Your photo is safe. Retry, create a starter draft, or write the details yourself.',

@@ -112,14 +112,14 @@ export async function chooseDecision(
   if (!process.env.GEMINI_API_KEY) return { decision: localDecision(listing, text), mode: 'rules' };
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(process.env.GEMINI_MODEL || 'gemini-2.5-flash')}:generateContent`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite')}:generateContent`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'x-goog-api-key': process.env.GEMINI_API_KEY,
         },
-        signal: AbortSignal.timeout(18000),
+        signal: AbortSignal.timeout(30000),
         body: JSON.stringify({
           systemInstruction: {
             parts: [
@@ -145,17 +145,23 @@ export async function chooseDecision(
           ],
           tools: [{ functionDeclarations: tools }],
           toolConfig: { functionCallingConfig: { mode: 'ANY' } },
-          generationConfig: { temperature: 0 },
+          generationConfig: { thinkingConfig: { thinkingLevel: 'low' } },
         }),
       },
     );
-    if (!response.ok) throw new Error('Model unavailable');
+    if (!response.ok)
+      throw new Error(`Gemini decision request failed with HTTP ${response.status}`);
     const data: any = await response.json();
     const calls = data.candidates?.[0]?.content?.parts?.filter((p: any) => p.functionCall) || [];
     if (calls.length !== 1) throw new Error('Ambiguous tool selection');
     const call = calls[0].functionCall;
     return { decision: decisionSchema.parse({ ...call.args, name: call.name }), mode: 'gemini' };
-  } catch {
+  } catch (error) {
+    if (process.env.NODE_ENV !== 'test')
+      console.warn(
+        'Gemini decision unavailable:',
+        error instanceof Error ? error.message : 'Unknown provider error',
+      );
     return {
       decision: {
         name: 'request_clarification',

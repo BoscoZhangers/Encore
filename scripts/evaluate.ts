@@ -77,7 +77,7 @@ console.log(
       dataset: dataset.version,
       split,
       mode: live ? 'gemini with enforced tools' : 'deterministic rules (no model)',
-      model: live ? process.env.GEMINI_MODEL || 'gemini-2.5-flash' : null,
+      model: live ? process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite' : null,
       cases: count,
       actionAccuracy: results.filter((r) => r.actionCorrect).length / count,
       outcomePassRate: results.filter((r) => r.outcomeCorrect).length / count,

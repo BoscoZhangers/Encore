@@ -46,7 +46,7 @@ Open **Sell an item** to start with a snapshot. Take one photo with the device c
 - With Gemini configured, **Generate draft from photo** sends the selected image and optional seller notes to the model. It suggests a title, category, description, visible details to check, and seller questions. Multiple focal sale items or an unclear image trigger a retake request.
 - Without a key, **Create starter draft** uses only the item name and notes the seller types. It is explicitly labeled as a non-AI starter; it does not identify or analyze the image.
 - Review and edit the suggestions, select which fields to apply, and acknowledge review. Applying a draft does not save or publish the listing and never changes prices, private terms, condition, or confirmed agent knowledge. New listings require the seller to choose a condition.
-- Set `GEMINI_VISION_MODEL` to override the photo model; otherwise it uses `GEMINI_MODEL` and the existing server-side `GEMINI_API_KEY`. Live vision accuracy has not been tested with a real key.
+- `GEMINI_MODEL` selects the conversation model and `GEMINI_VISION_MODEL` can select a separate photo model. The example configuration uses Flash-Lite for frequent conversation decisions and Gemini 3.8 Flash for richer image understanding.
 
 Camera capture requires a secure context (HTTPS or localhost) and permission. Upload remains available when camera access is denied. Supported uploads: JPG, PNG, WebP, up to 8 MB.
 
@@ -56,7 +56,7 @@ Edit `.env`; keep credentials out of Git and the browser bundle.
 
 | Integration               | Environment settings                                                                   | Current behavior                                                                                                                            |
 | ------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| Gemini                    | `GEMINI_API_KEY`, `GEMINI_MODEL`                                                       | Chooses one structured tool from public facts. Failures become seller handoffs.                                                             |
+| Gemini                    | `GEMINI_API_KEY`, `GEMINI_MODEL`, `GEMINI_VISION_MODEL`                                | Chooses one structured tool from public facts and drafts listing text from one item photo. Failures become seller handoffs.                 |
 | Tiger Data / PostgreSQL   | `DATABASE_URL`                                                                         | Uses PostgreSQL instead of local SQLite. Use the provider's TLS connection string.                                                          |
 | S3 / Vultr Object Storage | `S3_BUCKET`, `S3_ENDPOINT`, `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | Private bucket objects served through access-checked API routes.                                                                            |
 | Resend email              | `RESEND_API_KEY`, `NOTIFICATION_FROM`                                                  | Optional notifications for users who opt in. In-app notifications work without it.                                                          |
