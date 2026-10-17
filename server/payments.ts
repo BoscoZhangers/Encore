@@ -8,7 +8,7 @@ import {
 } from '@solana/web3.js';
 import type { Query } from './db.js';
 import { HttpError } from './domain.js';
-export const DEVNET_GENESIS = 'EtWTRABZaYq6iMfeYKouRu166VU2xqa1';
+export const DEVNET_GENESIS = 'EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG';
 function connection() {
   return new Connection(
     process.env.SOLANA_DEVNET_RPC || 'https://api.devnet.solana.com',
