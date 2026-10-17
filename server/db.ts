@@ -9,10 +9,12 @@ export interface Query {
   run(sql: string, args?: any[]): Promise<number>;
 }
 export interface DB extends Query {
+  kind: 'postgresql' | 'sqlite';
+  ping(): Promise<void>;
   transaction<T>(fn: (q: Query) => Promise<T>): Promise<T>;
   close(): Promise<void>;
 }
-const schema = [
+const initialSchema = [
   `CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, name TEXT NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, email_notifications INTEGER NOT NULL DEFAULT 0, created_at BIGINT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS sessions (token TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, expires_at BIGINT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS listings (id TEXT PRIMARY KEY, seller_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, title TEXT NOT NULL, description TEXT NOT NULL, category TEXT NOT NULL, condition TEXT NOT NULL, price INTEGER NOT NULL CHECK(price>0), floor INTEGER NOT NULL CHECK(floor>0 AND floor<=price), quantity INTEGER NOT NULL CHECK(quantity>0), reserved INTEGER NOT NULL DEFAULT 0 CHECK(reserved>=0), sold INTEGER NOT NULL DEFAULT 0 CHECK(sold>=0), status TEXT NOT NULL DEFAULT 'draft', area TEXT NOT NULL, latitude REAL, longitude REAL, pickup TEXT NOT NULL, photos TEXT NOT NULL DEFAULT '[]', facts TEXT NOT NULL DEFAULT '[]', private_notes TEXT NOT NULL DEFAULT '', contact TEXT NOT NULL DEFAULT '', share_contact INTEGER NOT NULL DEFAULT 0, wallet TEXT NOT NULL DEFAULT '', sol_lamports BIGINT NOT NULL DEFAULT 0, created_at BIGINT NOT NULL, updated_at BIGINT NOT NULL, CHECK(reserved+sold<=quantity))`,
@@ -33,10 +35,39 @@ const schema = [
   `CREATE INDEX IF NOT EXISTS messages_conversation_time ON messages(conversation_id,created_at)`,
   `CREATE INDEX IF NOT EXISTS events_user_time ON events(user_id,created_at)`,
 ];
+const migrations = [{ version: 1, statements: initialSchema }] as const;
+
+async function migrate(db: DB) {
+  await db.run(
+    'CREATE TABLE IF NOT EXISTS encore_schema_migrations (version INTEGER PRIMARY KEY, applied_at BIGINT NOT NULL)',
+  );
+  const applied = new Set(
+    (await db.all('SELECT version FROM encore_schema_migrations')).map((row) =>
+      Number(row.version),
+    ),
+  );
+  for (const migration of migrations) {
+    if (applied.has(migration.version)) continue;
+    await db.transaction(async (q) => {
+      for (const statement of migration.statements) await q.run(statement);
+      await q.run(
+        'INSERT INTO encore_schema_migrations(version,applied_at) VALUES(?,?) ON CONFLICT(version) DO NOTHING',
+        [migration.version, Date.now()],
+      );
+    });
+  }
+}
+
 export async function openDB(options: { url?: string; file?: string } = {}): Promise<DB> {
   let db: DB;
   if (options.url) {
-    const pool = new Pool({ connectionString: options.url, max: 10 });
+    const pool = new Pool({
+      connectionString: options.url,
+      application_name: 'encore-api',
+      max: Math.max(1, Number(process.env.DATABASE_POOL_MAX) || 10),
+      connectionTimeoutMillis: 10000,
+      idleTimeoutMillis: 30000,
+    });
     const query = (client: any): Query => ({
       all: async (s, a = []) => {
         let n = 0;
@@ -62,6 +93,10 @@ export async function openDB(options: { url?: string; file?: string } = {}): Pro
     });
     db = {
       ...query(pool),
+      kind: 'postgresql',
+      ping: async () => {
+        await pool.query('SELECT 1');
+      },
       transaction: async (fn) => {
         // Callbacks contain database operations only, so serialization retries
         // cannot repeat an external message, payment, or model request.
@@ -100,6 +135,10 @@ export async function openDB(options: { url?: string; file?: string } = {}): Pro
       return p;
     };
     db = {
+      kind: 'sqlite',
+      ping: async () => {
+        await raw.get('SELECT 1');
+      },
       all: (s, a) => lock(() => raw.all(s, a)),
       get: (s, a) => lock(() => raw.get(s, a)),
       run: (s, a) => lock(() => raw.run(s, a)),
@@ -121,6 +160,7 @@ export async function openDB(options: { url?: string; file?: string } = {}): Pro
       },
     };
   }
-  for (const sql of schema) await db.run(sql);
+  await db.ping();
+  await migrate(db);
   return db;
 }

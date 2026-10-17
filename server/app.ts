@@ -136,14 +136,16 @@ export function createApp(db: DB) {
       path: '/',
     });
   }
-  app.get('/api/health', (_req, res) =>
+  app.get('/api/health', async (_req, res) => {
+    await db.ping();
     res.json({
       ok: true,
       agent: process.env.GEMINI_API_KEY ? 'gemini' : 'rules',
       payments: 'devnet',
-      database: process.env.DATABASE_URL ? 'postgresql' : 'sqlite',
-    }),
-  );
+      database: db.kind,
+      databaseReady: true,
+    });
+  });
   app.get('/api/auth/me', (req, res) => res.json({ user: req.user ? publicUser(req.user) : null }));
   app.post('/api/auth/register', authLimiter, async (req, res) => {
     const data = credentials.extend({ name: z.string().trim().min(2).max(60) }).parse(req.body);

@@ -41,7 +41,7 @@ export function AgentInbox({ tell }: { tell: Tell }) {
           <div className="eyebrow">
             <ShieldCheck size={14} /> Human when it matters
           </div>
-          <h1>Your agent needs a hand.</h1>
+          <h1>Cora needs a hand.</h1>
           <p className="muted">A quick answer. A final say. You keep control of the sale.</p>
         </div>
         <Link className="button secondary" to="/selling">

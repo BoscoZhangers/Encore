@@ -57,12 +57,21 @@ Edit `.env`; keep credentials out of Git and the browser bundle.
 | Integration               | Environment settings                                                                   | Current behavior                                                                                                                            |
 | ------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | Gemini                    | `GEMINI_API_KEY`, `GEMINI_MODEL`, `GEMINI_VISION_MODEL`                                | Chooses one structured tool from public facts and drafts listing text from one item photo. Failures become seller handoffs.                 |
-| Tiger Data / PostgreSQL   | `DATABASE_URL`                                                                         | Uses PostgreSQL instead of local SQLite. Use the provider's TLS connection string.                                                          |
+| Tiger Data / PostgreSQL   | `DATABASE_URL`, `DATABASE_POOL_MAX`                                                    | Uses PostgreSQL instead of local SQLite, applies versioned schema migrations, and verifies the connection at startup.                       |
 | S3 / Vultr Object Storage | `S3_BUCKET`, `S3_ENDPOINT`, `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | Private bucket objects served through access-checked API routes.                                                                            |
 | Resend email              | `RESEND_API_KEY`, `NOTIFICATION_FROM`                                                  | Optional notifications for users who opt in. In-app notifications work without it.                                                          |
 | Solana devnet             | `SOLANA_DEVNET_RPC`                                                                    | Seller sets a receiving wallet and test-SOL amount. Buyer approves in Phantom after reservation approval. No real CAD settlement or escrow. |
 
 These adapters are implemented; live service credentials and a public deployment are not included. Private notes are stored for the seller and are deliberately **not** sent to the model; only explicitly confirmed public facts guide answers.
+
+### Connect Tiger Data
+
+1. Create a Tiger Cloud service and copy its PostgreSQL service URI from the Tiger Cloud console.
+2. Add the URI only to your ignored local `.env` as `DATABASE_URL`. Keep the TLS setting included in the provider URI.
+3. Run `npm run db:check`. A successful check reports the schema version and table count without printing credentials.
+4. Start Encore normally. `/api/health` should report `"database":"postgresql"` and `"databaseReady":true`.
+
+`DATABASE_POOL_MAX` defaults to 10. Local SQLite data is not copied automatically, and the public demo seed must not be run against a production service.
 
 ## Verify
 

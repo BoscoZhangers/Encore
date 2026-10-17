@@ -245,7 +245,7 @@ test('marketplace navigation preserves filters, listing details and the separate
       container.querySelector('.market-breadcrumb strong')?.textContent,
       'Cora requests',
     );
-    assert.match(container.textContent!, /Your agent needs a hand/);
+    assert.match(container.textContent!, /Cora needs a hand/);
     await click('.market-sidebar a[href="/selling"]');
     await click('.page-title a[href="/sell"]');
     assert.equal(window.location.pathname, '/sell');

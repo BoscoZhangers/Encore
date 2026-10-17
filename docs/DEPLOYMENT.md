@@ -16,11 +16,11 @@ With `NODE_ENV=development`, visit `http://localhost:3001`. Set `APP_ORIGIN` to 
 
 1. Provision a host, point your domain to it, and install Docker plus your preferred HTTPS reverse proxy.
 2. Copy `.env.example` to `.env`. Set `NODE_ENV=production`, `APP_ORIGIN=https://your-domain`, and production credentials. Do not upload `.env` to Git.
-3. Configure Tiger Data's PostgreSQL connection URL with the provider's required TLS settings. Leaving `DATABASE_URL` empty uses SQLite in the persistent Docker volume, suitable only for a single-instance small pilot. Existing SQLite data is not automatically migrated to PostgreSQL.
+3. Configure Tiger Data's PostgreSQL connection URL with the provider's required TLS settings. Run `npm run db:check` once from the configured environment; it verifies connectivity and applies pending versioned schema migrations. Leaving `DATABASE_URL` empty uses SQLite in the persistent Docker volume, suitable only for a single-instance small pilot. Existing SQLite data is not automatically migrated to PostgreSQL.
 4. Configure a private S3-compatible bucket and scoped credentials, or keep local photo storage in the persistent volume.
 5. Run `docker compose up -d --build`. The app binds only to host loopback port 3001. The reverse proxy should forward HTTPS traffic to `127.0.0.1:3001` and preserve the original host.
 6. If the app has exactly one trusted reverse proxy, add `TRUST_PROXY=1` to `.env` so rate limits use client IPs. Do not set it with a publicly reachable untrusted upstream.
-7. Check `/api/health`, registration/login, private image access, seller approval, model failure handoff, and an actual backup restore before inviting testers.
+7. Check that `/api/health` reports PostgreSQL with `databaseReady: true`, then verify registration/login, private image access, seller approval, model failure handoff, and an actual backup restore before inviting testers.
 
 Example Caddy configuration:
 

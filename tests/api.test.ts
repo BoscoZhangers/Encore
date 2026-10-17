@@ -83,6 +83,15 @@ after(async () => {
   await db.close();
   await rm(photoDirectory, { recursive: true, force: true });
 });
+test('database migrations and health report a ready SQLite connection', async () => {
+  const migration = await db.get(
+    'SELECT version FROM encore_schema_migrations ORDER BY version DESC LIMIT 1',
+  );
+  assert.equal(Number(migration?.version), 1);
+  const health = await request(app).get('/api/health').expect(200);
+  assert.equal(health.body.database, 'sqlite');
+  assert.equal(health.body.databaseReady, true);
+});
 test('listing views persist, deduplicate concurrent visits and exclude owners and polling', async () => {
   const listing = (
     await seller

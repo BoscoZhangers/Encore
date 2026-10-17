@@ -3,6 +3,7 @@ import { openDB } from './db.js';
 import { createApp } from './app.js';
 import { deliverNotifications } from './notifications.js';
 const db = await openDB({ url: process.env.DATABASE_URL });
+console.log(`Encore database ready · ${db.kind}`);
 const retentionDays = Math.max(7, Number(process.env.RETENTION_DAYS) || 90);
 async function cleanup() {
   await db.run('DELETE FROM sessions WHERE expires_at<?', [Date.now()]);

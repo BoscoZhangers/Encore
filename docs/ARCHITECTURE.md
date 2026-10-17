@@ -14,7 +14,7 @@ Seller-only notes currently serve as private notes, not executable policies. Cha
 
 ## Storage and transactions
 
-SQLite is the zero-configuration local path. PostgreSQL is selected by `DATABASE_URL` and uses the same schema. Its transactions use serializable isolation with bounded retries for serialization failures and deadlocks. Schema bootstrapping is create-if-missing; use explicit migrations before changing a deployed schema.
+SQLite is the zero-configuration local path. PostgreSQL/Tiger Data is selected by `DATABASE_URL` and uses the same versioned schema migrations. Startup verifies the connection and applies each pending migration transactionally. PostgreSQL transactions use serializable isolation with bounded retries for serialization failures and deadlocks. Add a new migration rather than editing an already deployed migration when the schema changes.
 
 Quantities satisfy `reserved + sold <= quantity`. Approval conditionally increments reserved stock, checks the current floor, then conditionally transitions a pending request. Conflicts roll back. Requests larger than remaining stock are closed. Completion moves reserved to sold once; only completed requests contribute to seller-reported proceeds. Seller-reported completion is not independently verified payment.
 
