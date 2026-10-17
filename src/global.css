@@ -17,6 +17,12 @@
   --line: #e2e7dd;
   --cream: #f8f8f3;
 }
+/* Match Encore's spacious desktop composition at normal browser zoom. */
+@media (min-width: 1001px) {
+  #root {
+    zoom: 0.8;
+  }
+}
 * {
   box-sizing: border-box;
 }
