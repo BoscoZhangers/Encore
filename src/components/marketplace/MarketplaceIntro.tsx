@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, MessageCircle, Plus, ShieldCheck, ShoppingBag, Sparkles } from 'lucide-react';
+import { ArrowRight, Infinity, MessageCircle, Plus, ShieldCheck, ShoppingBag, Sparkles } from 'lucide-react';
 import type { User } from '../../types';
 import { InsightsSummary } from '../insights/InsightsSummary';
 import { HeroAtmosphere } from './HeroAtmosphere';
@@ -42,7 +42,7 @@ export function MarketplaceIntro({
             <HeroAtmosphere />
             <div className="market-banner-copy">
               <p className="market-banner-label">
-                <Sparkles size={15} /> MEET CORA, YOUR SELLING SIDEKICK
+                <Infinity size={15} /> MEET CORA, YOUR SELLING SIDEKICK
               </p>
               <h2>
                 Good things deserve
