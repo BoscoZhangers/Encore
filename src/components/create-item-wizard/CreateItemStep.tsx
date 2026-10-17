@@ -30,6 +30,6 @@ export function CreateItemStep({
     );
   if (step === 2) return <AgentKnowledgeStep item={item} field={field} />;
   if (step === 3) return <HandoffStep item={item} field={field} setItem={setItem} tell={tell} />;
-  if (step === 4) return <PaymentStep item={item} field={field} />;
+  if (step === 4) return <PaymentStep item={item} field={field} tell={tell} />;
   return null;
 }

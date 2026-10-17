@@ -191,6 +191,32 @@ export function createApp(db: DB) {
     ]);
     res.json({ ok: true });
   });
+  app.get('/api/account/wallet', auth, async (req, res) => {
+    const saved = await db.get('SELECT wallet,updated_at FROM seller_wallets WHERE user_id=?', [
+      req.user!.id,
+    ]);
+    res.json({ wallet: saved?.wallet || '', updated_at: saved ? Number(saved.updated_at) : null });
+  });
+  app.patch('/api/account/wallet', auth, async (req, res) => {
+    const wallet = z.string().trim().min(32).max(50).parse(req.body.wallet);
+    const { PublicKey } = await import('@solana/web3.js');
+    try {
+      if (!PublicKey.isOnCurve(new PublicKey(wallet).toBytes())) throw new Error();
+    } catch {
+      throw new HttpError(400, 'Connect a valid standard Solana wallet');
+    }
+    const now = Date.now();
+    await db.run(
+      `INSERT INTO seller_wallets(user_id,wallet,created_at,updated_at) VALUES(?,?,?,?)
+       ON CONFLICT(user_id) DO UPDATE SET wallet=excluded.wallet,updated_at=excluded.updated_at`,
+      [req.user!.id, wallet, now, now],
+    );
+    res.json({ wallet, updated_at: now });
+  });
+  app.delete('/api/account/wallet', auth, async (req, res) => {
+    await db.run('DELETE FROM seller_wallets WHERE user_id=?', [req.user!.id]);
+    res.json({ ok: true });
+  });
   app.get('/api/account/profile', auth, async (req, res) => {
     const profile = await db.get('SELECT photo_id FROM profiles WHERE user_id=?', [req.user!.id]);
     res.json({

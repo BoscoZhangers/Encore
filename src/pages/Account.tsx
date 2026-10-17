@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, Trash2 } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowRight, ShieldCheck, Trash2, WalletCards } from 'lucide-react';
 import { api } from '../api';
 import { useData } from '../hooks/useData';
 import { AccountPhoto } from '../components/account/AccountPhoto';
@@ -67,6 +67,16 @@ export function Account({
         <p className="hint">
           In-app updates are always available. Email delivery requires a configured provider.
         </p>
+        <div className="account-wallet-link">
+          <WalletCards size={20} />
+          <div>
+            <strong>Solana wallet</strong>
+            <p>Connect Phantom and choose a default address for new listings.</p>
+          </div>
+          <Link to="/wallet">
+            Manage <ArrowRight size={15} />
+          </Link>
+        </div>
         <h3>Blocked buyers</h3>
         {blocks.data?.blocks.length ? (
           blocks.data.blocks.map((b: any) => (

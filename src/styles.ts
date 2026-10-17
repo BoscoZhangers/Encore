@@ -35,3 +35,4 @@ import './pages/Messages.css';
 import './pages/agent-inbox/AgentInbox.css';
 import './pages/Activity.css';
 import './pages/Account.css';
+import './pages/Wallet.css';

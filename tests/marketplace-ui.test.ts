@@ -92,6 +92,7 @@ test('marketplace navigation preserves filters, listing details and the separate
     if (path.endsWith('/notifications/read')) return Response.json({ ok: true });
     if (path.endsWith('/conversations/unread')) return Response.json({ unread: 4 });
     if (path.endsWith('/account/profile')) return Response.json({ avatar_url: null });
+    if (path.endsWith('/account/wallet')) return Response.json({ wallet: '' });
     if (path.endsWith('/blocks')) return Response.json({ blocks: [] });
     if (path.includes('/listings?')) return Response.json({ listings: items });
     if (path.endsWith('/listings/headphones')) return Response.json({ listing: item });
@@ -235,7 +236,7 @@ test('marketplace navigation preserves filters, listing details and the separate
       Array.from(container.querySelectorAll('.market-sidebar nav a')).map((link) =>
         link.getAttribute('href'),
       ),
-      ['/', '/listings', '/selling', '/insights', '/discover', '/messages'],
+      ['/', '/listings', '/selling', '/insights', '/wallet', '/discover', '/messages'],
     );
     await click('.agent-card a[href="/inbox"]');
     assert.equal(window.location.pathname, '/inbox');
@@ -277,6 +278,13 @@ test('marketplace navigation preserves filters, listing details and the separate
     await click('.insights-period-menu button[data-period="previous-month"]');
     assert.match(container.querySelector('.insights-period')?.textContent || '', /Last month/);
     assert.ok(requests.some((r) => r.includes('/seller/insights?period=previous-month')));
+    await click('.market-sidebar a[title="Solana wallet"]');
+    assert.equal(window.location.pathname, '/wallet');
+    assert.match(container.textContent!, /Connect your receiving wallet/);
+    assert.match(
+      container.textContent!,
+      /never ask for your password, private key, or recovery phrase/i,
+    );
     await click('.market-notifications');
     assert.equal(window.location.pathname, '/activity');
     assert.ok(container.querySelector('.marketplace-shell'));

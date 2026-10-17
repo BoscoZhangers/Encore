@@ -35,7 +35,15 @@ const initialSchema = [
   `CREATE INDEX IF NOT EXISTS messages_conversation_time ON messages(conversation_id,created_at)`,
   `CREATE INDEX IF NOT EXISTS events_user_time ON events(user_id,created_at)`,
 ];
-const migrations = [{ version: 1, statements: initialSchema }] as const;
+const migrations = [
+  { version: 1, statements: initialSchema },
+  {
+    version: 2,
+    statements: [
+      `CREATE TABLE IF NOT EXISTS seller_wallets (user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE, wallet TEXT NOT NULL, created_at BIGINT NOT NULL, updated_at BIGINT NOT NULL)`,
+    ],
+  },
+] as const;
 
 async function migrate(db: DB) {
   await db.run(

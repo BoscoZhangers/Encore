@@ -35,7 +35,17 @@ export function Sell({ tell }: { tell: Tell }) {
   const [busy, setBusy] = useState(false);
   const [loading, setLoading] = useState(!!id);
   useEffect(() => {
-    if (!id) return;
+    if (!id) {
+      api('/account/wallet')
+        .then((data) => {
+          if (data.wallet)
+            setItem((current: any) =>
+              current.wallet ? current : { ...current, wallet: data.wallet },
+            );
+        })
+        .catch(() => {});
+      return;
+    }
     api('/seller/listings')
       .then((data) => {
         const found = data.listings.find((listing: any) => listing.id === id);

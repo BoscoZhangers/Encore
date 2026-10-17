@@ -22,6 +22,7 @@ import { Messages } from './pages/Messages';
 import { Overview } from './pages/Overview';
 import { Sell } from './pages/Sell';
 import { SellingSpace } from './pages/SellingSpace';
+import { Wallet } from './pages/Wallet';
 
 export default function App() {
   const [user, setUser] = useState<any>(null);
@@ -39,6 +40,7 @@ export default function App() {
     pathname === '/account' ||
     pathname === '/activity' ||
     pathname === '/insights' ||
+    pathname === '/wallet' ||
     pathname === '/inbox' ||
     pathname === '/sell' ||
     pathname.startsWith('/sell/') ||
@@ -150,6 +152,7 @@ export default function App() {
             <Route path="/listings" element={<Listings user={user} />} />
             <Route path="/discover" element={<Discover />} />
             <Route path="/insights" element={protect(<Insights />)} />
+            <Route path="/wallet" element={protect(<Wallet tell={tell} />)} />
             <Route path="/login" element={<Login setUser={setUser} />} />
             <Route path="/items/:id" element={<Item user={user} tell={tell} loading={loading} />} />
             <Route path="/selling" element={protect(<SellingSpace user={user} />)} />

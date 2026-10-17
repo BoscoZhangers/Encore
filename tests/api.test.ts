@@ -6,6 +6,7 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import sharp from 'sharp';
+import { Keypair } from '@solana/web3.js';
 import { openDB, type DB } from '../server/db.js';
 import { createApp } from '../server/app.js';
 import { publicListing, approveReservation, message } from '../server/domain.js';
@@ -87,10 +88,26 @@ test('database migrations and health report a ready SQLite connection', async ()
   const migration = await db.get(
     'SELECT version FROM encore_schema_migrations ORDER BY version DESC LIMIT 1',
   );
-  assert.equal(Number(migration?.version), 1);
+  assert.equal(Number(migration?.version), 2);
   const health = await request(app).get('/api/health').expect(200);
   assert.equal(health.body.database, 'sqlite');
   assert.equal(health.body.databaseReady, true);
+});
+test('seller can save and remove a default public Solana wallet', async () => {
+  const wallet = Keypair.generate().publicKey.toBase58();
+  await request(app).get('/api/account/wallet').expect(401);
+  assert.equal((await seller.get('/api/account/wallet').expect(200)).body.wallet, '');
+  await seller
+    .patch('/api/account/wallet')
+    .set(headers)
+    .send({ wallet: 'not-a-wallet' })
+    .expect(400);
+  const saved = await seller.patch('/api/account/wallet').set(headers).send({ wallet }).expect(200);
+  assert.equal(saved.body.wallet, wallet);
+  assert.equal((await seller.get('/api/account/wallet').expect(200)).body.wallet, wallet);
+  assert.equal((await buyer.get('/api/account/wallet').expect(200)).body.wallet, '');
+  await seller.delete('/api/account/wallet').set(headers).expect(200);
+  assert.equal((await seller.get('/api/account/wallet').expect(200)).body.wallet, '');
 });
 test('listing views persist, deduplicate concurrent visits and exclude owners and polling', async () => {
   const listing = (

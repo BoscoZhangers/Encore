@@ -20,3 +20,29 @@
   padding: 12px 0;
   border-bottom: 1px solid var(--line);
 }
+.account-wallet-link {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  margin: 24px 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.account-wallet-link > svg {
+  color: #66864f;
+}
+.account-wallet-link p {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.account-wallet-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 600;
+}

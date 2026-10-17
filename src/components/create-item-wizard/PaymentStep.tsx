@@ -1,6 +1,15 @@
+import { useState } from 'react';
+import { WalletCards } from 'lucide-react';
+import { connectPhantom } from '../../lib/phantom';
+import type { Tell } from '../feedback/Toast';
 import type { WizardStepProps } from './types';
 
-export function PaymentStep({ item, field }: Pick<WizardStepProps, 'item' | 'field'>) {
+export function PaymentStep({
+  item,
+  field,
+  tell,
+}: Pick<WizardStepProps, 'item' | 'field'> & { tell: Tell }) {
+  const [connecting, setConnecting] = useState(false);
   return (
     <>
       <p className="hint">
@@ -15,6 +24,23 @@ export function PaymentStep({ item, field }: Pick<WizardStepProps, 'item' | 'fie
           maxLength={50}
         />
       </label>
+      <button
+        className="button secondary"
+        type="button"
+        disabled={connecting}
+        onClick={async () => {
+          setConnecting(true);
+          try {
+            field('wallet', await connectPhantom());
+          } catch (error: any) {
+            tell(error.message, 'error');
+          } finally {
+            setConnecting(false);
+          }
+        }}
+      >
+        <WalletCards size={16} /> {connecting ? 'Opening Phantom…' : 'Use Phantom wallet'}
+      </button>
       <label>
         Test SOL per item
         <input

@@ -10,6 +10,7 @@ import {
   Settings,
   ShoppingBag,
   Store,
+  WalletCards,
 } from 'lucide-react';
 import type { Tell } from '../feedback/Toast';
 import type { User } from '../../types';
@@ -56,6 +57,10 @@ export function Navbar({
         <NavLink to="/insights" title="Insights">
           <ChartNoAxesCombined size={19} />
           <span>Insights</span>
+        </NavLink>
+        <NavLink to="/wallet" title="Solana wallet">
+          <WalletCards size={19} />
+          <span>Wallet</span>
         </NavLink>
         <NavLink
           to="/discover"
