@@ -191,6 +191,13 @@ export function createApp(db: DB) {
     ]);
     res.json({ ok: true });
   });
+  app.get('/api/account/email-status', auth, async (_req, res) => {
+    res.json({
+      available: Boolean(
+        process.env.RESEND_API_KEY && process.env.NOTIFICATION_FROM && process.env.APP_ORIGIN,
+      ),
+    });
+  });
   app.get('/api/account/wallet', auth, async (req, res) => {
     const saved = await db.get('SELECT wallet,updated_at FROM seller_wallets WHERE user_id=?', [
       req.user!.id,

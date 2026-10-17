@@ -19,6 +19,7 @@ import './components/marketplace/ListingSection.css';
 import './components/marketplace/ListingCards.css';
 import './components/marketplace/BuyerFilters.css';
 import './components/marketplace/CoraActivity.css';
+import './components/account/EmailNotificationPreference.css';
 import './components/insights/InsightsSummary.css';
 
 // Listing creation workflow.

@@ -1,4 +1,13 @@
 /* Updates page. */
+.updates-content {
+  width: min(100%, 812px);
+  margin-inline: auto;
+}
+
+.updates-content > .page-title {
+  width: 100%;
+}
+
 .notification-list {
   padding: 0;
 }

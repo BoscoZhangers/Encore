@@ -1,0 +1,111 @@
+.email-notification-preference {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  margin: 22px 0;
+  padding: 17px 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fbfcf8;
+}
+
+.email-notification-preference.compact {
+  margin: 0 0 20px;
+  background: #fff;
+}
+
+.email-notification-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  color: var(--green);
+  background: #edf3e3;
+}
+
+.email-notification-copy {
+  display: grid;
+  gap: 3px;
+}
+
+.email-notification-copy strong {
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.email-notification-copy > span {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.email-notification-copy small {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 3px;
+  color: #688153;
+  font-size: 9px;
+}
+
+.email-notification-copy small.delivery-warning {
+  color: #9a652b;
+}
+
+.preference-switch {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid #cfd6c9;
+  border-radius: 999px;
+  background: #e8ebe4;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.preference-switch span {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgb(25 52 42 / 18%);
+  transition: transform 160ms ease;
+}
+
+.preference-switch.enabled {
+  border-color: var(--green);
+  background: var(--green);
+}
+
+.preference-switch.enabled span {
+  transform: translateX(18px);
+}
+
+.preference-switch:focus-visible {
+  outline: 3px solid rgb(164 200 100 / 35%);
+  outline-offset: 2px;
+}
+
+.preference-switch:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+@media (max-width: 600px) {
+  .email-notification-preference {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .preference-switch {
+    grid-column: 2;
+    margin-top: 5px;
+  }
+}

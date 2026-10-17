@@ -160,7 +160,10 @@ export default function App() {
             <Route path="/sell/:id?" element={protect(<Sell tell={tell} />)} />
             <Route path="/messages/:id?" element={protect(<Messages user={user} tell={tell} />)} />
             <Route path="/inbox" element={protect(<AgentInbox tell={tell} />)} />
-            <Route path="/activity" element={protect(<Activity />)} />
+            <Route
+              path="/activity"
+              element={protect(<Activity user={user} setUser={setUser} tell={tell} />)}
+            />
             <Route
               path="/account"
               element={protect(<Account user={user} setUser={setUser} tell={tell} />)}

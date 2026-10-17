@@ -6,16 +6,18 @@ import { useData } from '../hooks/useData';
 import { AccountPhoto } from '../components/account/AccountPhoto';
 import { ErrorBox } from '../components/ui';
 import type { Tell } from '../components/feedback/Toast';
-
-type AccountUser = { id: string; name: string; email: string; email_notifications?: boolean };
+import {
+  EmailNotificationPreference,
+  type NotificationUser,
+} from '../components/account/EmailNotificationPreference';
 
 export function Account({
   user,
   setUser,
   tell,
 }: {
-  user: AccountUser;
-  setUser: (user: AccountUser | null) => void;
+  user: NotificationUser;
+  setUser: (user: NotificationUser | null) => void;
   tell: Tell;
 }) {
   const navigate = useNavigate();
@@ -39,34 +41,7 @@ export function Account({
           Your email is used to sign in. Sellers choose separately whether to share contact
           information on a listing.
         </p>
-        <label className="check-label">
-          <input
-            type="checkbox"
-            checked={!!user.email_notifications}
-            onChange={async (e) => {
-              const enabled = e.target.checked;
-              try {
-                await api('/account/preferences', {
-                  method: 'PATCH',
-                  body: JSON.stringify({ email_notifications: enabled }),
-                });
-                setUser({ ...user, email_notifications: enabled });
-                tell(
-                  enabled
-                    ? 'Email notifications enabled when email delivery is configured.'
-                    : 'Email notifications turned off.',
-                  enabled ? 'success' : 'info',
-                );
-              } catch (e: any) {
-                tell(e.message, 'error');
-              }
-            }}
-          />{' '}
-          Email me seller questions and reservation updates
-        </label>
-        <p className="hint">
-          In-app updates are always available. Email delivery requires a configured provider.
-        </p>
+        <EmailNotificationPreference user={user} setUser={setUser} tell={tell} />
         <div className="account-wallet-link">
           <WalletCards size={20} />
           <div>
