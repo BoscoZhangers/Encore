@@ -236,6 +236,17 @@ test('marketplace navigation preserves filters, listing details and the separate
       ),
       ['/', '/listings', '/selling', '/insights', '/discover', '/messages'],
     );
+    await click('.agent-card a[href="/inbox"]');
+    assert.equal(window.location.pathname, '/inbox');
+    assert.ok(container.querySelector('.marketplace-shell .inbox-page'));
+    assert.equal(container.querySelectorAll('.market-sidebar').length, 1);
+    assert.equal(container.querySelectorAll('.header').length, 0);
+    assert.equal(
+      container.querySelector('.market-breadcrumb strong')?.textContent,
+      'Cora requests',
+    );
+    assert.match(container.textContent!, /Your agent needs a hand/);
+    await click('.market-sidebar a[href="/selling"]');
     await click('.page-title a[href="/sell"]');
     assert.equal(window.location.pathname, '/sell');
     assert.ok(container.querySelector('.marketplace-shell .listing-wizard'));

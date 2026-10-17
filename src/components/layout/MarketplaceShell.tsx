@@ -33,13 +33,15 @@ export function MarketplaceShell({
               ? 'Your updates'
               : pathname === '/insights'
                 ? 'Insights'
-                : pathname === '/sell'
-                  ? 'Sell an item'
-                  : pathname.startsWith('/sell/')
-                    ? 'Edit listing'
-                    : pathname === '/selling'
-                      ? 'My selling space'
-                      : 'Overview';
+                : pathname === '/inbox'
+                  ? 'Cora requests'
+                  : pathname === '/sell'
+                    ? 'Sell an item'
+                    : pathname.startsWith('/sell/')
+                      ? 'Edit listing'
+                      : pathname === '/selling'
+                        ? 'My selling space'
+                        : 'Overview';
   return (
     <div className="marketplace-shell">
       <a className="market-skip" href="#market-content">

@@ -13,7 +13,7 @@ import { Navbar } from './components/layout/Navbar';
 import { Account } from './pages/Account';
 import { Activity } from './pages/Activity';
 import { Discover } from './pages/Discover';
-import { Inbox } from './pages/Inbox';
+import { AgentInbox } from './pages/agent-inbox/AgentInbox';
 import { Insights } from './pages/Insights';
 import { Item } from './pages/Item';
 import { Listings } from './pages/Listings';
@@ -39,6 +39,7 @@ export default function App() {
     pathname === '/account' ||
     pathname === '/activity' ||
     pathname === '/insights' ||
+    pathname === '/inbox' ||
     pathname === '/sell' ||
     pathname.startsWith('/sell/') ||
     pathname === '/messages' ||
@@ -154,7 +155,7 @@ export default function App() {
             <Route path="/selling" element={protect(<SellingSpace user={user} />)} />
             <Route path="/sell/:id?" element={protect(<Sell tell={tell} />)} />
             <Route path="/messages/:id?" element={protect(<Messages user={user} tell={tell} />)} />
-            <Route path="/inbox" element={protect(<Inbox tell={tell} />)} />
+            <Route path="/inbox" element={protect(<AgentInbox tell={tell} />)} />
             <Route path="/activity" element={protect(<Activity />)} />
             <Route
               path="/account"

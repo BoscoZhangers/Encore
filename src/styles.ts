@@ -32,6 +32,6 @@ import './pages/Login.css';
 import './pages/SellingSpace.css';
 import './pages/Item.css';
 import './pages/Messages.css';
-import './pages/Inbox.css';
+import './pages/agent-inbox/AgentInbox.css';
 import './pages/Activity.css';
 import './pages/Account.css';

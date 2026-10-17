@@ -8,12 +8,12 @@ import {
   ShieldCheck,
   ShoppingBag,
 } from 'lucide-react';
-import { cad, post } from '../api';
-import { useData } from '../hooks/useData';
-import { Empty, ErrorBox, Spinner } from '../components/ui';
-import type { Tell } from '../components/feedback/Toast';
+import { cad, post } from '../../api';
+import { useData } from '../../hooks/useData';
+import { Empty, ErrorBox, Spinner } from '../../components/ui';
+import type { Tell } from '../../components/feedback/Toast';
 
-export function Inbox({ tell }: { tell: Tell }) {
+export function AgentInbox({ tell }: { tell: Tell }) {
   const { data, error, reload } = useData('/seller/requests', 6000);
   const [filter, setFilter] = useState('pending');
   const [failure, setFailure] = useState('');
