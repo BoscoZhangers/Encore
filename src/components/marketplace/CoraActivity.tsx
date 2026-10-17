@@ -100,6 +100,11 @@ export function CoraActivity() {
         </ol>
       ) : (
         <div className="cora-activity-empty">
+          <span className="cora-quiet-icon" aria-hidden="true">
+            <span>Z</span>
+            <span>z</span>
+            <span>z</span>
+          </span>
           <h3>A quiet moment for Cora</h3>
           <p>Offers, buyer conversations, and questions that need your help will appear here.</p>
         </div>

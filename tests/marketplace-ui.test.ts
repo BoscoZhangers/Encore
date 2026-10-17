@@ -19,6 +19,7 @@ const { createElement, act } = await import('react');
 const { createRoot } = await import('react-dom/client');
 const { BrowserRouter } = await import('react-router-dom');
 const { default: App } = await import('../src/App.js');
+const { CoraActivity } = await import('../src/components/marketplace/CoraActivity.js');
 const originalFetch = globalThis.fetch;
 after(() => {
   globalThis.fetch = originalFetch;
@@ -170,6 +171,11 @@ test('marketplace navigation preserves filters, listing details and the separate
       container.querySelector('a[title="Messages"]')?.getAttribute('aria-label'),
       'Messages, 4 unread',
     );
+    await click('.market-help');
+    assert.match(
+      container.querySelector('.toast-info')?.textContent || '',
+      /Need a hand\? Contact hello@encore\.example for demo support\./,
+    );
     await click('.market-sidebar a[href="/listings"]');
     assert.equal(window.location.pathname, '/listings');
     assert.equal(container.querySelector('.cora-activity'), null);
@@ -265,6 +271,27 @@ test('marketplace navigation preserves filters, listing details and the separate
     assert.equal(container.querySelectorAll('.market-sidebar').length, 1);
     assert.equal(container.querySelector('.header'), null);
     assert.equal(container.querySelector('.market-breadcrumb strong')?.textContent, 'Your updates');
+  } finally {
+    await act(async () => root.unmount());
+    container.remove();
+  }
+});
+
+test('Cora activity uses a sleep icon for its quiet state', async () => {
+  globalThis.fetch = async (url) => {
+    if (String(url).endsWith('/notifications')) return Response.json({ notifications: [] });
+    throw Error(`Unexpected request: ${url}`);
+  };
+  const container = document.createElement('div');
+  document.body.append(container);
+  const root = createRoot(container);
+  try {
+    await act(async () => {
+      root.render(createElement(BrowserRouter, null, createElement(CoraActivity)));
+      await new Promise((resolve) => setTimeout(resolve, 40));
+    });
+    assert.match(container.textContent!, /A quiet moment for Cora/);
+    assert.equal(container.querySelector('.cora-quiet-icon')?.textContent, 'Zzz');
   } finally {
     await act(async () => root.unmount());
     container.remove();

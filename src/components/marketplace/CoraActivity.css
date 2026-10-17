@@ -171,6 +171,32 @@
 .cora-activity-empty {
   padding: 0 0 28px;
 }
+.cora-quiet-icon {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  margin-top: 24px;
+  border-radius: 12px;
+  background: #f1f5eb;
+  color: #6d8455;
+  font-weight: 600;
+  line-height: 1;
+}
+.cora-quiet-icon span:nth-child(1) {
+  font-size: 15px;
+  transform: translateY(3px);
+}
+.cora-quiet-icon span:nth-child(2) {
+  font-size: 12px;
+  transform: translateY(-1px);
+}
+.cora-quiet-icon span:nth-child(3) {
+  font-size: 9px;
+  transform: translateY(-5px);
+}
 .cora-activity-empty h3 {
   margin-top: 16px;
 }

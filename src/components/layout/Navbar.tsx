@@ -11,16 +11,19 @@ import {
   ShoppingBag,
   Store,
 } from 'lucide-react';
+import type { Tell } from '../feedback/Toast';
 import type { User } from '../../types';
 
 export function Navbar({
   user,
   pathname,
   unreadMessages = 0,
+  tell,
 }: {
   user: User;
   pathname: string;
   unreadMessages?: number;
+  tell: Tell;
 }) {
   const { search } = useLocation();
   const sellerListing =
@@ -87,10 +90,17 @@ export function Navbar({
             Give it another chapter <ArrowRight size={15} />
           </Link>
         </div>
-        <Link className="market-help" to="/#cora-guide" title="Help & Support">
+        <button
+          className="market-help"
+          type="button"
+          title="Help & Support"
+          onClick={() =>
+            tell('Need a hand? Contact hello@encore.example for demo support.', 'info')
+          }
+        >
           <CircleHelp size={18} />
           <span>Help & Support</span>
-        </Link>
+        </button>
         <Link
           className="market-profile"
           to={user ? '/account' : '/login'}

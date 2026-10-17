@@ -99,7 +99,7 @@ export default function App() {
 
   return (
     <>
-      <Navbar user={user} pathname={pathname} unreadMessages={unreadMessages} />
+      <Navbar user={user} pathname={pathname} unreadMessages={unreadMessages} tell={tell} />
       <MarketplaceShell enabled={marketplace} user={user} unread={unread} logout={logout}>
         {!marketplace && (
           <header className="header">
