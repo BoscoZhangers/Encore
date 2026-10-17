@@ -43,7 +43,9 @@ export function Chat({ id, user, tell }: { id: string; user: { id: string }; tel
     setBusy(true);
     setError('');
     try {
-      const wallet = (window as any).solana;
+      // Phantom exposes its provider under `window.phantom.solana` in current
+      // extensions. Keep the legacy alias as a fallback for older versions.
+      const wallet = (window as any).phantom?.solana || (window as any).solana;
       if (!wallet?.isPhantom)
         throw Error('Open this page with a compatible Phantom wallet to try the devnet payment.');
       if (
