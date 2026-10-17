@@ -5,6 +5,7 @@ import {
   ChartNoAxesCombined,
   LayoutGrid,
   Leaf,
+  Infinity as InfinityIcon,
   MessageCircle,
   Package,
   Settings,
@@ -82,6 +83,10 @@ export function Navbar({
               {unreadMessages > 99 ? '99+' : unreadMessages}
             </b>
           )}
+        </NavLink>
+        <NavLink to="/inbox" title="Cora requests">
+          <InfinityIcon size={20} />
+          <span>Cora requests</span>
         </NavLink>
       </nav>
       <div className="market-sidebar-bottom">

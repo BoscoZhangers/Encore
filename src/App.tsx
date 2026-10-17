@@ -8,6 +8,7 @@ import { BrandLogo } from './components/layout/BrandLogo';
 import { MarketplaceShell } from './components/layout/MarketplaceShell';
 import { Empty } from './components/ui';
 import { Toast, type Tell, type ToastNotice } from './components/feedback/Toast';
+import { CoraShortcut } from './components/agent/CoraShortcut';
 import { useUnreadMessages } from './hooks/useUnreadMessages';
 import { Navbar } from './components/layout/Navbar';
 import { Account } from './pages/Account';
@@ -176,6 +177,7 @@ export default function App() {
         </main>
         {!marketplace && <Footer variant="app" />}
       </MarketplaceShell>
+      {user && <CoraShortcut />}
       {toast && <Toast key={toast.id} notice={toast} onDismiss={() => setToast(null)} />}
     </>
   );

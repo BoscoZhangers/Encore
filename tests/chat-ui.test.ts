@@ -78,10 +78,9 @@ test('chat aligns messages to the viewer and displays participant and item photo
       container.querySelector('.seller .message-sender img')?.getAttribute('src'),
       '/api/photos/maya',
     );
-    assert.equal(
-      container.querySelector('.agent .message-sender img')?.getAttribute('src'),
-      '/brand/encore-mark.svg',
-    );
+    assert.ok(container.querySelector('.agent .message-sender .cora-avatar'));
+    assert.ok(container.querySelector('.agent .message-sender .lucide-infinity'));
+    assert.equal(container.querySelector('.agent .message-sender img'), null);
     await render('buyer');
     assert.ok(container.querySelector('.buyer.outgoing'));
     assert.ok(container.querySelector('.seller.incoming'));

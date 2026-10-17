@@ -236,8 +236,10 @@ test('marketplace navigation preserves filters, listing details and the separate
       Array.from(container.querySelectorAll('.market-sidebar nav a')).map((link) =>
         link.getAttribute('href'),
       ),
-      ['/', '/listings', '/selling', '/insights', '/wallet', '/discover', '/messages'],
+      ['/', '/listings', '/selling', '/insights', '/wallet', '/discover', '/messages', '/inbox'],
     );
+    assert.equal(container.querySelector('.cora-shortcut')?.getAttribute('href'), '/inbox');
+    assert.ok(container.querySelector('.cora-shortcut .lucide-infinity'));
     await click('.agent-card a[href="/inbox"]');
     assert.equal(window.location.pathname, '/inbox');
     assert.ok(container.querySelector('.marketplace-shell .inbox-page'));

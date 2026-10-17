@@ -8,6 +8,8 @@ import './components/layout/Navbar.css';
 import './components/layout/MarketplaceShell.css';
 import './components/layout/Footer.css';
 import './components/SellerAvatar.css';
+import './components/agent/CoraAvatar.css';
+import './components/agent/CoraShortcut.css';
 import './components/feedback/Toast.css';
 
 // Marketplace features.

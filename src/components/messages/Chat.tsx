@@ -6,6 +6,7 @@ import { useData } from '../../hooks/useData';
 import { useReadConversation } from '../../hooks/useUnreadMessages';
 import { ErrorBox, Spinner } from '../ui';
 import { SellerAvatar } from '../SellerAvatar';
+import { CoraAvatar } from '../agent/CoraAvatar';
 import type { Tell } from '../feedback/Toast';
 
 export function Chat({ id, user, tell }: { id: string; user: { id: string }; tell: Tell }) {
@@ -124,22 +125,22 @@ export function Chat({ id, user, tell }: { id: string; user: { id: string }; tel
           >
             <div className="message-meta">
               <span className="message-sender">
-                <SellerAvatar
-                  name={
-                    m.role === 'agent'
-                      ? 'Cora'
-                      : m.role === 'buyer'
+                {m.role === 'agent' ? (
+                  <CoraAvatar />
+                ) : (
+                  <SellerAvatar
+                    name={
+                      m.role === 'buyer'
                         ? data.conversation.buyer_name || 'Buyer'
                         : data.conversation.seller_name || 'Seller'
-                  }
-                  src={
-                    m.role === 'agent'
-                      ? '/brand/encore-mark.svg'
-                      : m.role === 'buyer'
+                    }
+                    src={
+                      m.role === 'buyer'
                         ? data.conversation.buyer_avatar_url
                         : data.conversation.seller_avatar_url
-                  }
-                />
+                    }
+                  />
+                )}
                 {m.role === 'buyer'
                   ? `${data.conversation.buyer_name || 'Buyer'} (Buyer)`
                   : m.role === 'seller'
