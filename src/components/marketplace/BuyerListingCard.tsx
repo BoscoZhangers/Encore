@@ -21,15 +21,22 @@ export type MarketplaceListing = {
 
 export function BuyerListingCard({ item }: { item: MarketplaceListing }) {
   const sellerName = item.seller_name || 'Seller';
+  const sold = item.market_status === 'sold';
 
   return (
-    <article className="figma-listing-card">
+    <article className={`figma-listing-card${sold ? ' sold' : ''}`}>
       <Link
         className="figma-listing-photo"
         to={`/items/${item.id}`}
-        aria-label={`View ${item.title}, ${item.condition}`}
+        aria-label={`View ${item.title}, ${item.condition}${sold ? ', sold' : ''}`}
       >
         <Picture item={item} />
+        {sold && (
+          <span className="figma-sold-cover" aria-hidden="true">
+            <strong>Sold</strong>
+            <small>Off to its next chapter</small>
+          </span>
+        )}
         <span className="figma-listing-status buyer-condition">
           <i aria-hidden="true" />
           {item.condition}

@@ -323,7 +323,7 @@ export function createApp(db: DB) {
         const item = publicListing(r);
         return {
           ...item,
-          ...(f.stage ? { market_status: r.market_status } : {}),
+          market_status: r.market_status,
           distance:
             f.lat !== undefined && f.lng !== undefined && r.latitude !== null
               ? distanceKm(f.lat, f.lng, r.latitude, r.longitude)

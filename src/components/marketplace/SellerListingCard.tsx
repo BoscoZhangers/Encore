@@ -24,15 +24,22 @@ export function SellerListingCard({
   buyer?: boolean;
 }) {
   const status = item.market_status || 'active';
+  const sold = status === 'sold';
 
   return (
-    <article className="figma-listing-card">
+    <article className={`figma-listing-card${sold ? ' sold' : ''}`}>
       <Link
         className="figma-listing-photo"
         to={`/items/${item.id}?from=listings`}
-        aria-label={`View ${item.title}`}
+        aria-label={`View ${item.title}${sold ? ', sold' : ''}`}
       >
         <Picture item={item} />
+        {sold && (
+          <span className="figma-sold-cover" aria-hidden="true">
+            <strong>Sold</strong>
+            <small>Off to its next chapter</small>
+          </span>
+        )}
         <span className={`figma-listing-status ${status}`}>
           <i />
           {buyer

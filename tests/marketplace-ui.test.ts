@@ -55,6 +55,7 @@ test('marketplace navigation preserves filters, listing details and the separate
       id: `extra-${index + 1}`,
       title: `Extra listing ${index + 1}`,
       views: index + 1,
+      ...(index === 0 ? { available: 0, market_status: 'sold' } : {}),
     })),
   ];
   globalThis.fetch = async (url) => {
@@ -139,6 +140,11 @@ test('marketplace navigation preserves filters, listing details and the separate
     assert.equal(
       container.querySelectorAll('.overview-listings-layout .figma-listing-card').length,
       6,
+    );
+    assert.ok(container.querySelector('.overview-listings-layout .figma-listing-card.sold'));
+    assert.match(
+      container.querySelector('.overview-listings-layout .figma-sold-cover')?.textContent || '',
+      /SoldOff to its next chapter/,
     );
     assert.match(container.querySelector('.listing-pagination')!.textContent!, /Page 1 of 5/);
     await click('.listing-pagination button:last-child');

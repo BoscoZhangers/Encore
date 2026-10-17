@@ -776,7 +776,7 @@ test('unavailable listings remain visible only to the seller and reserving buyer
       .query({ scope: 'others', q: 'Reserved visibility example' })
       .expect(200)
   ).body.listings;
-  assert.equal(completedForBuyer[0].market_status, undefined);
+  assert.equal(completedForBuyer[0].market_status, 'sold');
   assert.equal(completedForBuyer[0].available, 0);
 });
 
