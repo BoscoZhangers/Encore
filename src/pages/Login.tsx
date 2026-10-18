@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowRight, Leaf, LoaderCircle, Sparkles } from 'lucide-react';
+import { ArrowRight, Leaf, LoaderCircle } from 'lucide-react';
 import { post } from '../api';
 import { ErrorBox } from '../components/ui';
 import type { User } from '../types';
+import { WelcomePage } from '../components/welcome/WelcomePage';
 
-export function Login({ setUser }: { setUser: (user: User) => void }) {
+export function Login({ setUser, returnTo }: { setUser: (user: User) => void; returnTo?: string }) {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const [signup, setSignup] = useState(false);
@@ -24,7 +25,7 @@ export function Login({ setUser }: { setUser: (user: User) => void }) {
         password: f.get('password'),
       });
       setUser(result.user);
-      const next = params.get('next');
+      const next = params.get('next') || returnTo;
       navigate(next?.startsWith('/') && !next.startsWith('//') ? next : '/');
     } catch (e: any) {
       setError(e.message);
@@ -34,30 +35,17 @@ export function Login({ setUser }: { setUser: (user: User) => void }) {
   }
 
   return (
-    <div className="auth-layout page">
-      <div className="auth-story">
-        <span className="eyebrow">
-          <Sparkles size={14} /> Welcome to Encore
-        </span>
-        <h1>
-          A little less clutter.
-          <br />
-          <em>A lot more possibility.</em>
-        </h1>
-        <p>
-          Good things deserve another chapter.
-          <br />
-          Let’s help yours find one.
-        </p>
-        <div className="auth-brand">
-          <img src="/brand/encore-reference.png" alt="Encore logo and tagline" />
-        </div>
-      </div>
-      <form className="panel auth-form" onSubmit={submit}>
+    <WelcomePage>
+      <form
+        id="welcome-signin"
+        className="auth-form"
+        onSubmit={submit}
+        aria-labelledby="signin-title"
+      >
         <div className="eyebrow">
           <Leaf size={14} /> Your next chapter
         </div>
-        <h2>{signup ? 'Make yourself at home.' : 'Good to see you again.'}</h2>
+        <h2 id="signin-title">{signup ? 'Make yourself at home.' : 'Good to see you again.'}</h2>
         <p className="muted">One account to discover, sell, and make a deal.</p>
         <ErrorBox error={error} />
         {signup && (
@@ -105,6 +93,6 @@ export function Login({ setUser }: { setUser: (user: User) => void }) {
           </button>
         </p>
       </form>
-    </div>
+    </WelcomePage>
   );
 }

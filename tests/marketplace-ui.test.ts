@@ -341,3 +341,54 @@ test('Cora activity uses a sleep icon for its quiet state', async () => {
     container.remove();
   }
 });
+
+test('signed-out visitors see the welcome experience without the app navigation', async () => {
+  let resolveSession!: (response: Response) => void;
+  const session = new Promise<Response>((resolve) => {
+    resolveSession = resolve;
+  });
+  globalThis.fetch = async (url) => {
+    if (String(url).endsWith('/auth/me')) return session;
+    if (String(url).endsWith('/health')) return Response.json({ agent: 'gemini' });
+    throw Error(`Unexpected guest request: ${url}`);
+  };
+  window.history.replaceState(null, '', '/messages?from=shared-link');
+  const container = document.createElement('div');
+  document.body.append(container);
+  const root = createRoot(container);
+  try {
+    await act(async () => {
+      root.render(createElement(BrowserRouter, null, createElement(App)));
+    });
+    assert.ok(container.querySelector('.welcome-loading'));
+    assert.equal(container.querySelector('.market-sidebar'), null);
+    await act(async () => {
+      resolveSession(Response.json({ user: null }));
+      await new Promise((resolve) => setTimeout(resolve, 30));
+    });
+    assert.ok(container.querySelector('#welcome-signin'));
+    assert.ok(container.querySelector('#meet-cora'));
+    assert.equal(container.querySelector('.market-sidebar'), null);
+    assert.equal(container.querySelector('.market-topbar'), null);
+    assert.equal(container.querySelector('.messages-page'), null);
+    assert.equal(container.querySelectorAll('[role="tab"]').length, 3);
+    await act(async () => {
+      (container.querySelector('#tour-tab-conversation') as HTMLButtonElement).click();
+    });
+    assert.equal(
+      container.querySelector('#tour-panel img')?.getAttribute('src'),
+      '/showcase/conversation.webp',
+    );
+    const toggle = container.querySelector('.auth-switch button') as HTMLButtonElement;
+    await act(async () => toggle.click());
+    assert.ok(container.querySelector('input[name="name"]'));
+    assert.equal(
+      container.querySelector('input[name="password"]')?.getAttribute('autocomplete'),
+      'new-password',
+    );
+  } finally {
+    await act(async () => root.unmount());
+    container.remove();
+    window.history.replaceState(null, '', '/');
+  }
+});

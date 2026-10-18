@@ -1,88 +1,67 @@
-/* Authentication page. */
-.auth-layout {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 80px;
-  max-width: 1150px;
-  align-items: center;
-  padding-top: 65px;
-  padding-bottom: 70px;
+/* Sign-in form inside the public welcome page. */
+.welcome-page .auth-form {
+  padding: 32px;
+  background: #fffef8;
+  color: #213f30;
+  border: 1px solid #edf1e5;
+  border-radius: 18px;
+  box-shadow: 0 20px 50px #06281c40;
 }
-.auth-story h1 {
-  font-size: 37px;
-  line-height: 1.25;
-  margin: 15px 0 20px;
+.welcome-page .auth-form .eyebrow {
+  color: #84996b;
+  font-size: 9px;
 }
-.auth-story em {
-  font-style: normal;
-  color: #7e9b58;
+.welcome-page .auth-form h2 {
+  font-size: 29px;
+  letter-spacing: -1px;
+  margin: 15px 0 10px;
+  line-height: 1.2;
 }
-.auth-story p {
-  font-size: 14px;
-  color: var(--muted);
-}
-.auth-brand {
-  width: 170px;
-  height: 120px;
-  overflow: hidden;
-  position: relative;
-  margin-top: 30px;
-}
-.auth-brand img {
-  width: 170px;
-  position: absolute;
-  top: -9px;
-  mix-blend-mode: multiply;
-}
-.auth-form h2 {
-  font-size: 26px;
-  margin: 14px 0 10px;
-}
-.auth-form .muted {
+.welcome-page .auth-form .muted {
+  font-size: 12px;
   margin-bottom: 23px;
 }
-.auth-form label {
+.welcome-page .auth-form label {
   margin: 18px 0;
-}
-.auth-switch {
   font-size: 12px;
-  color: var(--muted);
+}
+.welcome-page .auth-form input {
+  background: #fafbf6;
+  font-size: 14px;
+  padding: 13px 14px;
+  border-color: #dce4d3;
+}
+.welcome-page .auth-form label small {
+  font-size: 10px;
+}
+.welcome-page .auth-form .button {
+  padding: 14px 20px;
+  border-radius: 9px;
+}
+.welcome-page .auth-switch {
+  font-size: 11px;
+  color: #7c8872;
   text-align: center;
   margin-top: 22px;
 }
-.auth-switch button {
-  color: var(--green);
+.welcome-page .auth-switch button {
+  color: #345e36;
   background: none;
   font-weight: 600;
   padding: 0 3px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
-
-/* Responsive adjustments. */
-@media (max-width: 850px) {
-  .auth-layout {
-    gap: 35px;
+@media (max-width: 1000px) {
+  .welcome-page .auth-form {
+    padding: 25px;
   }
-  .auth-story h1 {
-    font-size: 29px;
+  .welcome-page .auth-form h2 {
+    font-size: 25px;
   }
 }
-
-@media (max-width: 650px) {
-  .auth-layout {
-    grid-template-columns: 1fr;
-    gap: 25px;
-    padding-top: 30px;
-  }
-  .auth-story h1 {
-    font-size: 31px;
-  }
-  .auth-brand {
-    display: none;
-  }
-  .auth-story > p {
-    display: none;
-  }
-  .auth-form {
-    padding: 23px;
+@media (max-width: 400px) {
+  .welcome-page .auth-form {
+    padding: 23px 18px;
   }
 }

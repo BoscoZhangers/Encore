@@ -25,7 +25,7 @@ const blankItem = {
   share_contact: false,
   wallet: '',
   sol_lamports: 10_000_000,
-  status: 'draft',
+  status: 'published',
 };
 
 export function Sell({ tell }: { tell: Tell }) {

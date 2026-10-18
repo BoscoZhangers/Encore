@@ -3,6 +3,7 @@
 The frontend is organized by ownership so a page or feature can be found without tracing a large shared file.
 
 - `pages/` contains one route module per page. Page-only styles sit beside that module.
+- `components/welcome/` contains the public landing experience, animated Cora introduction, and screenshot feature tour. `pages/Login.tsx` owns the authentication form. Signed-out visitors see this experience before the application shell.
 - `components/layout/` owns the persistent navigation, marketplace shell, branding, and footer.
 - `components/marketplace/` owns marketplace discovery, listing sections/cards, the overview introduction, Cora activity, and hero animation.
 - `components/create-item-wizard/` owns the complete five-step listing workflow. Each step has its own module; the orchestrator only handles navigation and validation.
@@ -22,3 +23,7 @@ When adding a feature:
 2. Extract reusable or stateful sections into an appropriate `components/feature/` folder.
 3. Place page-only CSS beside the page and reusable CSS beside the component.
 4. Add new CSS to `styles.ts` in dependency order.
+
+## Public feature captures
+
+`public/showcase/` contains optimized WebP screen captures of the actual Overview, creation wizard, and Messages interface. They were captured with browser-intercepted fictional data (Alex and Jordan), not real accounts or conversations. The landing page labels them as demo data. Refresh these assets when the corresponding interface changes; never capture personal account details for the public showcase.

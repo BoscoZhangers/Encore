@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
-import { Link, NavLink, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Navigate, NavLink, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Bell, LogOut, Plus } from 'lucide-react';
 import { api, post } from './api';
 import { Footer } from './components/layout/Footer';
 import { Protected } from './components/Protected';
 import { BrandLogo } from './components/layout/BrandLogo';
 import { MarketplaceShell } from './components/layout/MarketplaceShell';
-import { Empty } from './components/ui';
+import { Empty, Spinner } from './components/ui';
 import { Toast, type Tell, type ToastNotice } from './components/feedback/Toast';
 import { CoraShortcut } from './components/agent/CoraShortcut';
 import { useUnreadMessages } from './hooks/useUnreadMessages';
@@ -31,7 +31,7 @@ export default function App() {
   const [toast, setToast] = useState<ToastNotice | null>(null);
   const [health, setHealth] = useState<any>(null);
   const [unread, setUnread] = useState(0);
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const unreadMessages = useUnreadMessages(user?.id);
   const marketplace =
     pathname === '/' ||
@@ -101,6 +101,22 @@ export default function App() {
     </Protected>
   );
 
+  if (loading)
+    return (
+      <div className="welcome-loading">
+        <Spinner />
+      </div>
+    );
+
+  if (!user) {
+    return (
+      <>
+        <Login setUser={setUser} returnTo={pathname === '/login' ? undefined : pathname + search} />
+        {toast && <Toast key={toast.id} notice={toast} onDismiss={() => setToast(null)} />}
+      </>
+    );
+  }
+
   return (
     <>
       <Navbar user={user} pathname={pathname} unreadMessages={unreadMessages} tell={tell} />
@@ -154,7 +170,7 @@ export default function App() {
             <Route path="/discover" element={<Discover />} />
             <Route path="/insights" element={protect(<Insights />)} />
             <Route path="/wallet" element={protect(<Wallet tell={tell} />)} />
-            <Route path="/login" element={<Login setUser={setUser} />} />
+            <Route path="/login" element={<Navigate to="/" replace />} />
             <Route path="/items/:id" element={<Item user={user} tell={tell} loading={loading} />} />
             <Route path="/selling" element={protect(<SellingSpace user={user} />)} />
             <Route path="/sell/:id?" element={protect(<Sell tell={tell} />)} />
