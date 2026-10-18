@@ -40,7 +40,15 @@
   flex-direction: column;
 }
 .market-content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+.market-content > main {
+  display: flex;
   flex: 1 0 auto;
+  flex-direction: column;
 }
 .market-topbar {
   min-height: 74px;
@@ -169,6 +177,13 @@
 }
 /* Keep desktop proportions airy without scaling controls or browser zoom. */
 @media (min-width: 1001px) {
+  /* The desktop composition is rendered at 80%; compensate so short pages still
+     occupy the complete visible viewport and their footer reaches its bottom. */
+  .marketplace-shell,
+  .market-main,
+  .app-page-content {
+    min-height: 125vh;
+  }
   .market-topbar {
     min-height: 64px;
     padding-block: 12px;

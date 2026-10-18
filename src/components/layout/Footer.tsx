@@ -5,22 +5,33 @@ export function Footer({ variant = 'marketplace' }: { variant?: 'marketplace' | 
   if (variant === 'app') {
     return (
       <footer className="footer">
-        <BrandLogo />
-        <span>Good things deserve another chapter.</span>
-        <span>
-          Made for second chances. <Leaf size={14} />
-        </span>
+        <div className="footer-brand">
+          <BrandLogo />
+          <span>Good things deserve another chapter.</span>
+        </div>
+        <div className="footer-meta">
+          <span>© 2026 Encore</span>
+          <span>
+            <Leaf size={14} /> Made for second chances
+          </span>
+        </div>
       </footer>
     );
   }
 
   return (
     <footer className="market-footer">
-      <span>
+      <div className="market-footer-brand">
         <img src="/brand/encore-mark.svg" alt="" />
-        Good things deserve another chapter.
-      </span>
-      <span>A little less new. A lot more possibility.</span>
+        <strong>Encore</strong>
+        <span>Good things deserve another chapter.</span>
+      </div>
+      <div className="market-footer-meta">
+        <span>© 2026 Encore</span>
+        <span>
+          <Leaf size={13} /> Made for second chances
+        </span>
+      </div>
     </footer>
   );
 }
