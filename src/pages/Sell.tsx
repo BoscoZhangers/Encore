@@ -24,7 +24,7 @@ const blankItem = {
   contact: '',
   share_contact: false,
   wallet: '',
-  sol_lamports: 0,
+  sol_lamports: 10_000_000,
   status: 'draft',
 };
 

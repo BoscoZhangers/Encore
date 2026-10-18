@@ -1,4 +1,5 @@
 import type { WizardStepProps } from './types';
+import { EditableNumberInput } from './EditableNumberInput';
 import { PricingStep } from './PricingStep';
 
 const categories = ['Electronics', 'Furniture', 'Clothing', 'Books', 'Sports', 'Other'];
@@ -88,12 +89,12 @@ export function DetailsStep({
       )}
       <label>
         Total quantity
-        <input
-          type="number"
+        <EditableNumberInput
           min={Math.max(1, (item.reserved || 0) + (item.sold || 0))}
           max="1000"
+          step="1"
           value={item.quantity}
-          onChange={(event) => field('quantity', Number(event.target.value))}
+          onValueChange={(value) => field('quantity', Math.round(value))}
           required
         />
       </label>

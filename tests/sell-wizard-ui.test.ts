@@ -110,7 +110,34 @@ test('wizard preserves details across steps, validates prices, and can finish wi
     assert.match(container.querySelector('#wizard-title')!.textContent!, /Make it yours/);
     const title = container.querySelector('.wizard-fields input') as HTMLInputElement;
     await input(title, 'Updated headphones');
-    const floor = container.querySelectorAll('.wizard-fields input')[3] as HTMLInputElement;
+    const numericInputs = container.querySelectorAll<HTMLInputElement>(
+      '.wizard-fields input[type="number"]',
+    );
+    const quantity = numericInputs[0];
+    const price = numericInputs[1];
+    const floor = numericInputs[2];
+    assert.equal(price.step, '1');
+    await act(async () => quantity.focus());
+    await input(quantity, '');
+    assert.equal(quantity.value, '');
+    await act(async () => {
+      quantity.blur();
+      await flush();
+    });
+    assert.equal(quantity.value, '0');
+    await input(quantity, '005');
+    await act(async () => {
+      quantity.blur();
+      await flush();
+    });
+    assert.equal(quantity.value, '5');
+    await act(async () => price.focus());
+    await input(price, '00180');
+    await act(async () => {
+      price.blur();
+      await flush();
+    });
+    assert.equal(price.value, '180.00');
     await input(floor, '200');
     await click('Next');
     assert.match(notice, /cannot exceed/);

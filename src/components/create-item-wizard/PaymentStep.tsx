@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { WalletCards } from 'lucide-react';
 import { connectPhantom } from '../../lib/phantom';
 import type { Tell } from '../feedback/Toast';
+import { EditableNumberInput } from './EditableNumberInput';
 import type { WizardStepProps } from './types';
 
 export function PaymentStep({
@@ -43,15 +44,13 @@ export function PaymentStep({
       </button>
       <label>
         Test SOL per item
-        <input
-          type="number"
-          min="0"
+        <EditableNumberInput
+          min={item.sol_lamports > 0 ? 0.01 : 0}
           max="10"
-          step="0.000000001"
+          step="0.01"
           value={item.sol_lamports / 1_000_000_000}
-          onChange={(event) =>
-            field('sol_lamports', Math.round(Number(event.target.value) * 1_000_000_000))
-          }
+          decimalPlaces={2}
+          onValueChange={(amount) => field('sol_lamports', Math.round(amount * 1_000_000_000))}
         />
       </label>
     </>
