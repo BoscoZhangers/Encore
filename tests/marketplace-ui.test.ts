@@ -115,6 +115,12 @@ test('marketplace navigation preserves filters, listing details and the separate
     if (path.endsWith('/seller/requests')) return Response.json({ requests: [] });
     if (path.endsWith('/photo-drafts/capabilities'))
       return Response.json({ mode: 'guided', aiAvailable: false });
+    if (path.includes('/recommendations?'))
+      return Response.json({
+        personalized: true,
+        interests: [{ category: 'Electronics', views: 2, chats: 1, purchases: 1, score: 19 }],
+        listings: items.slice(0, 5),
+      });
     throw Error(`Unexpected request: ${path}`);
   };
   const container = document.createElement('div');
@@ -154,6 +160,16 @@ test('marketplace navigation preserves filters, listing details and the separate
     );
     await click('.listing-pagination button:first-child');
     assert.ok(container.querySelector('.overview-listings-layout .cora-activity'));
+    assert.equal(
+      container
+        .querySelector('.overview-listings-layout')
+        ?.nextElementSibling?.classList.contains('overview-recommendations'),
+      true,
+    );
+    assert.equal(
+      container.querySelectorAll('.overview-recommendations .figma-listing-card').length,
+      4,
+    );
     assert.match(container.querySelector('.cora-activity')!.textContent!, /Your updates/);
     assert.equal(container.querySelectorAll('.cora-activity-list li').length, 3);
     assert.match(container.querySelector('.cora-activity')!.textContent!, /CAD 160.00/);

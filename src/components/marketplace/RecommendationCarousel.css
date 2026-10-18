@@ -1,0 +1,134 @@
+.recommendation-carousel {
+  margin-top: 46px;
+  padding-top: 32px;
+  border-top: 1px solid #dfe5d9;
+}
+
+.recommendation-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 22px;
+}
+
+.recommendation-heading .market-kicker {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+  color: #728269;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+}
+
+.recommendation-heading h2 {
+  color: var(--ink);
+  font-size: 19px;
+  font-weight: 550;
+  letter-spacing: -0.45px;
+}
+
+.recommendation-heading > div > p:last-child {
+  margin-top: 7px;
+  color: #7c8874;
+  font-size: 10px;
+}
+
+.recommendation-actions,
+.recommendation-actions > a,
+.carousel-controls {
+  display: flex;
+  align-items: center;
+}
+
+.recommendation-actions {
+  gap: 20px;
+}
+
+.recommendation-actions > a {
+  gap: 8px;
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.carousel-controls {
+  gap: 8px;
+}
+
+.carousel-controls button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid #d9e1d3;
+  border-radius: 50%;
+  color: var(--green);
+  background: #fff;
+  transition:
+    transform 160ms ease,
+    background 160ms ease;
+}
+
+.carousel-controls button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: #eef4e7;
+}
+
+.carousel-controls button:disabled {
+  opacity: 0.35;
+}
+
+.carousel-controls span {
+  min-width: 30px;
+  text-align: center;
+  color: #7c8874;
+  font-size: 9px;
+}
+
+.recommendation-page,
+.recommendation-loading {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.recommendation-loading span {
+  min-height: 265px;
+  border-radius: 10px;
+  background: linear-gradient(100deg, #edf0e9 20%, #f7f8f4 40%, #edf0e9 60%);
+  background-size: 220% 100%;
+  animation: recommendation-shimmer 1.4s linear infinite;
+}
+
+.overview-recommendations {
+  margin-top: 38px;
+}
+
+@keyframes recommendation-shimmer {
+  to {
+    background-position-x: -220%;
+  }
+}
+
+@media (max-width: 1000px) {
+  .recommendation-page,
+  .recommendation-loading {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .recommendation-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .recommendation-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

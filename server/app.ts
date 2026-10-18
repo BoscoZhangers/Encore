@@ -27,6 +27,7 @@ import { storePhoto, readPhoto, deletePhoto } from './storage.js';
 import { paymentIntent, verifyPayment } from './payments.js';
 import { createPhotoDraft, draftInput } from './drafts.js';
 import { conversationMessages, unreadMessageCount } from './messageReads.js';
+import { recommendationFeed, recordCategoryInterest } from './recommendations.js';
 
 declare global {
   namespace Express {
@@ -354,6 +355,12 @@ export function createApp(db: DB) {
       results.sort((a, b) => (a.distance ?? Infinity) - (b.distance ?? Infinity));
     res.json({ listings: results });
   });
+  app.get('/api/recommendations', async (req, res) => {
+    const { limit } = z
+      .object({ limit: z.coerce.number().int().min(1).max(24).default(16) })
+      .parse(req.query);
+    res.json(await recommendationFeed(db, req.user?.id, limit));
+  });
   app.get('/api/seller/listings', auth, async (req, res) =>
     res.json({
       listings: (
@@ -389,7 +396,9 @@ export function createApp(db: DB) {
     const { visitorId } = z.object({ visitorId: uuid }).parse(req.body);
     const listingId = uuid.parse(req.params.id);
     const views = await db.transaction(async (q) => {
-      const listing = await q.get('SELECT seller_id,status FROM listings WHERE id=?', [listingId]);
+      const listing = await q.get('SELECT seller_id,status,category FROM listings WHERE id=?', [
+        listingId,
+      ]);
       if (!listing || (listing.status !== 'published' && listing.seller_id !== req.user?.id))
         throw new HttpError(404, 'Listing not found');
       if (listing.status === 'published' && listing.seller_id !== req.user?.id) {
@@ -397,10 +406,12 @@ export function createApp(db: DB) {
         const viewer = req.user ? `user:${req.user.id}` : `browser:${visitorId}`;
         // Scope the anonymous hash to this item and day; never store raw visitor IDs.
         const key = hashToken(`${listingId}:${day}:${viewer}`);
-        await q.run(
+        const inserted = await q.run(
           'INSERT INTO listing_views(listing_id,viewer_key,created_at) VALUES(?,?,?) ON CONFLICT(listing_id,viewer_key) DO NOTHING',
           [listingId, key, Date.now()],
         );
+        if (inserted && req.user)
+          await recordCategoryInterest(q, req.user.id, listing.category, 'view');
       }
       return Number(
         (await q.get('SELECT COUNT(*) AS views FROM listing_views WHERE listing_id=?', [
@@ -610,6 +621,7 @@ export function createApp(db: DB) {
           'Hi! I’m Cora, the seller’s assistant. I answer using seller-confirmed details and ask the seller when something is uncertain. Offers need seller approval.',
         );
         await event(db, listing.seller_id, 'buyer_conversation');
+        await recordCategoryInterest(db, req.user!.id, listing.category, 'chat');
       }
     }
     res.json({ conversation });
@@ -909,6 +921,16 @@ export function createApp(db: DB) {
           r.id,
           Date.now(),
         ]);
+      if (action === 'complete') {
+        const listing = await q.get('SELECT category FROM listings WHERE id=?', [r.listing_id]);
+        await recordCategoryInterest(
+          q,
+          r.buyer_id,
+          listing!.category,
+          'purchase',
+          Number(r.quantity),
+        );
+      }
       if (action !== 'decline')
         await q.run('UPDATE listings SET reserved=reserved-?,sold=sold+?,updated_at=? WHERE id=?', [
           r.quantity,

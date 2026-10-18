@@ -41,6 +41,23 @@ test('Discover has independent buyer filters, location consent and reset behavio
     if (path.endsWith('/health')) return Response.json({ agent: 'rules' });
     if (path.endsWith('/notifications')) return Response.json({ notifications: [] });
     if (path.endsWith('/conversations/unread')) return Response.json({ unread: 0 });
+    if (path.includes('/recommendations?'))
+      return Response.json({
+        personalized: true,
+        interests: [{ category: 'Furniture', views: 1, chats: 1, purchases: 0, score: 6 }],
+        listings: Array.from({ length: 6 }, (_, index) => ({
+          id: `recommendation-${index + 1}`,
+          title: `Recommendation ${index + 1}`,
+          category: 'Furniture',
+          condition: 'Good',
+          seller_name: 'Encore seller',
+          photos: [],
+          price: 2000 + index,
+          views: index,
+          available: 1,
+          area: 'Toronto',
+        })),
+      });
     if (path.includes('/listings?'))
       return Response.json({
         listings: [
@@ -101,6 +118,23 @@ test('Discover has independent buyer filters, location consent and reset behavio
     await settle(() => avatar.dispatchEvent(new window.Event('error') as unknown as Event));
     assert.equal(container.querySelector('.seller-avatar')?.textContent, 'MC');
     assert.equal(container.querySelector('.figma-listing-tabs'), null);
+    assert.match(
+      container.querySelector('.recommendation-heading')?.textContent || '',
+      /Furniture/,
+    );
+    assert.equal(container.querySelectorAll('.recommendation-page .figma-listing-card').length, 4);
+    assert.match(
+      container.querySelector('.recommendation-page')?.textContent || '',
+      /Recommendation 1/,
+    );
+    await settle(() =>
+      (container.querySelector('button[aria-label="Next recommendations"]') as HTMLElement).click(),
+    );
+    assert.equal(container.querySelectorAll('.recommendation-page .figma-listing-card').length, 2);
+    assert.match(
+      container.querySelector('.recommendation-page')?.textContent || '',
+      /Recommendation 5/,
+    );
     assert.ok(requests.some((r) => r.includes('scope=others')));
     assert.equal(geoCalls, 0);
     const nav = container.querySelector('a[title="Discover"]')!;

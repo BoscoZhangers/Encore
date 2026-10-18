@@ -43,6 +43,42 @@ const migrations = [
       `CREATE TABLE IF NOT EXISTS seller_wallets (user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE, wallet TEXT NOT NULL, created_at BIGINT NOT NULL, updated_at BIGINT NOT NULL)`,
     ],
   },
+  {
+    version: 3,
+    statements: [
+      `CREATE TABLE IF NOT EXISTS user_category_interests (
+        user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        category TEXT NOT NULL,
+        view_count INTEGER NOT NULL DEFAULT 0,
+        chat_count INTEGER NOT NULL DEFAULT 0,
+        purchase_count INTEGER NOT NULL DEFAULT 0,
+        updated_at BIGINT NOT NULL,
+        PRIMARY KEY(user_id,category)
+      )`,
+      `INSERT INTO user_category_interests
+        (user_id,category,view_count,chat_count,purchase_count,updated_at)
+       SELECT c.buyer_id,l.category,0,COUNT(*),0,MAX(c.created_at)
+       FROM conversations c JOIN listings l ON l.id=c.listing_id
+       WHERE 1=1 GROUP BY c.buyer_id,l.category
+       ON CONFLICT(user_id,category) DO UPDATE SET
+         chat_count=excluded.chat_count,
+         updated_at=CASE WHEN user_category_interests.updated_at>excluded.updated_at
+           THEN user_category_interests.updated_at ELSE excluded.updated_at END`,
+      `INSERT INTO user_category_interests
+        (user_id,category,view_count,chat_count,purchase_count,updated_at)
+       SELECT r.buyer_id,l.category,0,0,SUM(r.quantity),MAX(s.created_at)
+       FROM sale_completions s
+       JOIN requests r ON r.id=s.request_id
+       JOIN listings l ON l.id=r.listing_id
+       WHERE 1=1 GROUP BY r.buyer_id,l.category
+       ON CONFLICT(user_id,category) DO UPDATE SET
+         purchase_count=excluded.purchase_count,
+         updated_at=CASE WHEN user_category_interests.updated_at>excluded.updated_at
+           THEN user_category_interests.updated_at ELSE excluded.updated_at END`,
+      `CREATE INDEX IF NOT EXISTS category_interests_user_score
+       ON user_category_interests(user_id,purchase_count,chat_count,view_count)`,
+    ],
+  },
 ] as const;
 
 async function migrate(db: DB) {

@@ -88,10 +88,16 @@ test('database migrations and health report a ready SQLite connection', async ()
   const migration = await db.get(
     'SELECT version FROM encore_schema_migrations ORDER BY version DESC LIMIT 1',
   );
-  assert.equal(Number(migration?.version), 2);
+  assert.equal(Number(migration?.version), 3);
   const health = await request(app).get('/api/health').expect(200);
   assert.equal(health.body.database, 'sqlite');
   assert.equal(health.body.databaseReady, true);
+  const buyerId = (await buyer.get('/api/auth/me')).body.user.id;
+  const chatInterest = await db.get(
+    "SELECT chat_count FROM user_category_interests WHERE user_id=? AND category='Electronics'",
+    [buyerId],
+  );
+  assert.equal(Number(chatInterest?.chat_count), 1);
 });
 test('seller can save and remove a default public Solana wallet', async () => {
   const wallet = Keypair.generate().publicKey.toBase58();
@@ -137,6 +143,12 @@ test('listing views persist, deduplicate concurrent visits and exclude owners an
     ),
   );
   for (let n = 0; n < 3; n++) assert.equal((await request(app).get(url)).body.listing.views, 3);
+  const buyerId = (await buyer.get('/api/auth/me')).body.user.id;
+  const viewInterest = await db.get(
+    "SELECT view_count FROM user_category_interests WHERE user_id=? AND category='Electronics'",
+    [buyerId],
+  );
+  assert.equal(Number(viewInterest?.view_count), 1);
   for (const [agent, route] of [
     [seller, '/api/listings?scope=mine'],
     [buyer, '/api/listings?scope=others'],
@@ -367,6 +379,11 @@ test('only completion records proceeds and stock is counted exactly once', async
   const before = await seller.get('/api/seller/metrics');
   assert.equal(before.body.proceeds, 0);
   await seller.post(`/api/requests/${r.id}/complete`).set(headers).expect(200);
+  const purchaseInterest = await db.get(
+    "SELECT purchase_count FROM user_category_interests WHERE user_id=? AND category='Electronics'",
+    [r.buyer_id],
+  );
+  assert.equal(Number(purchaseInterest?.purchase_count), Number(r.quantity));
   await seller.post(`/api/requests/${r.id}/complete`).set(headers).expect(409);
   const after = await seller.get('/api/seller/metrics');
   assert.equal(after.body.proceeds, r.amount * r.quantity);
@@ -949,4 +966,54 @@ test('seller insights return scoped monthly metrics without exposing other selle
   await seller.get('/api/seller/insights').query({ period: 'all-time' }).expect(200);
   await seller.get('/api/seller/insights').query({ period: 'unsupported' }).expect(400);
   await request(app).get('/api/seller/insights').expect(401);
+});
+
+test('recommendations rank purchases above chats and views while excluding owned inventory', async () => {
+  const buyerUser = (await buyer.get('/api/auth/me').expect(200)).body.user;
+  await db.run('DELETE FROM user_category_interests WHERE user_id=?', [buyerUser.id]);
+  const recommended: Record<string, any> = {};
+  for (const [category, title] of [
+    ['Books', 'Recommendation book'],
+    ['Sports', 'Recommendation racket'],
+    ['Furniture', 'Recommendation table'],
+  ]) {
+    recommended[category] = (
+      await seller
+        .post('/api/listings')
+        .set(headers)
+        .send({ ...item, title, category })
+        .expect(201)
+    ).body.listing;
+  }
+  const owned = (
+    await buyer
+      .post('/api/listings')
+      .set(headers)
+      .send({ ...item, title: 'Buyer owned book', category: 'Books' })
+      .expect(201)
+  ).body.listing;
+  const now = Date.now();
+  for (const [category, views, chats, purchases] of [
+    ['Books', 0, 0, 1],
+    ['Sports', 0, 1, 0],
+    ['Furniture', 1, 0, 0],
+  ] as const)
+    await db.run(
+      'INSERT INTO user_category_interests(user_id,category,view_count,chat_count,purchase_count,updated_at) VALUES(?,?,?,?,?,?)',
+      [buyerUser.id, category, views, chats, purchases, now],
+    );
+
+  const result = (await buyer.get('/api/recommendations').query({ limit: 24 }).expect(200)).body;
+  assert.equal(result.personalized, true);
+  assert.deepEqual(
+    result.interests.slice(0, 3).map((interest: any) => interest.category),
+    ['Books', 'Sports', 'Furniture'],
+  );
+  const ids = result.listings.map((listing: any) => listing.id);
+  assert.ok(!ids.includes(owned.id));
+  assert.ok(ids.indexOf(recommended.Books.id) < ids.indexOf(recommended.Sports.id));
+  assert.ok(ids.indexOf(recommended.Sports.id) < ids.indexOf(recommended.Furniture.id));
+  const guest = (await request(app).get('/api/recommendations').expect(200)).body;
+  assert.equal(guest.personalized, false);
+  assert.deepEqual(guest.interests, []);
 });

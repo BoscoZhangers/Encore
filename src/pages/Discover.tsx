@@ -11,6 +11,7 @@ import {
   emptyBuyerFilters,
   type BuyerFilterValues,
 } from '../components/marketplace/BuyerFilters';
+import { RecommendationCarousel } from '../components/marketplace/RecommendationCarousel';
 type Location = { lat: number; lng: number };
 export function Discover() {
   const [draft, setDraft] = useState<BuyerFilterValues>(emptyBuyerFilters);
@@ -156,6 +157,7 @@ export function Discover() {
           </Empty>
         )
       )}
+      <RecommendationCarousel />
     </div>
   );
 }

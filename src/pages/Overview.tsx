@@ -4,6 +4,7 @@ import { MarketplaceIntro } from '../components/marketplace/MarketplaceIntro';
 import { SellerListingSection } from '../components/marketplace/SellerListingSection';
 import { CoraActivity } from '../components/marketplace/CoraActivity';
 import type { User } from '../types';
+import { RecommendationCarousel } from '../components/marketplace/RecommendationCarousel';
 
 export function Overview({ user, aiConnected }: { user: User; aiConnected: boolean }) {
   const { hash } = useLocation();
@@ -17,10 +18,13 @@ export function Overview({ user, aiConnected }: { user: User; aiConnected: boole
     <div className="page discover">
       <MarketplaceIntro user={user} />
       {user ? (
-        <div className="overview-listings-layout">
-          <SellerListingSection overview />
-          <CoraActivity />
-        </div>
+        <>
+          <div className="overview-listings-layout">
+            <SellerListingSection overview />
+            <CoraActivity />
+          </div>
+          <RecommendationCarousel overview />
+        </>
       ) : (
         <section className="overview-signin">
           <h2>Your selling overview</h2>
